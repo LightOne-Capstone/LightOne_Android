@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_main_btm_nav_home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_bottom_home"
         app:showAsAction="always"
         android:enabled="true"
@@ -10,17 +10,17 @@
         android:title="홈" />
 
     <item
-        android:id="@+id/menu_main_btm_nav_alarm"
-        android:icon="@drawable/ic_bottom_alarm"
+        android:id="@+id/suggestFragment"
+        android:icon="@drawable/ic_bottom_suggest"
         app:showAsAction="always"
         android:enabled="true"
-        android:title="알림" />
+        android:title="추천" />
 
     <item
-        android:id="@+id/menu_main_btm_nav_user"
-        android:icon="@drawable/ic_bottom_user"
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/ic_bottom_search"
         app:showAsAction="always"
         android:enabled="true"
-        android:title="내 주식" />
+        android:title="검색"/>
 
 </menu>

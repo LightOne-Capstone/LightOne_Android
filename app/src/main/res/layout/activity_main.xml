@@ -4,7 +4,7 @@
     <data>
         <variable
             name="vm"
-            type="com.lightone.android.kotlin.src.main.MainActivity" />
+            type="com.lightone.lighthouse.kotlin.src.main.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,17 +22,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/nav_graph" />
+            app:navGraph="@navigation/nav_graph"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navi"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
+            android:layout_margin="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:itemTextColor="@drawable/bottom_icon_color"
+            app:itemIconTint="@drawable/bottom_icon_color"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu_main_bottom_nav" />
+            app:menu="@menu/menu_main_bottom_nav"
+            android:background="@drawable/main_bottom_custom"/>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

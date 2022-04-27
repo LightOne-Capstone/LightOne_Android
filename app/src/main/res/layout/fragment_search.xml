@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.lightone.lighthouse.kotlin.viewmodel.SearchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/search_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/search_edit_custom"
+            android:drawableLeft="@drawable/ic_bottom_search"
+            android:drawablePadding="18dp"
+            android:hint="검색"
+            android:textColorHint="@color/main"
+            android:textColor="@color/main"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            android:layout_margin="16dp">
+        </EditText>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

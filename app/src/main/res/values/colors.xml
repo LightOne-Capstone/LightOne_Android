@@ -12,4 +12,7 @@
     <color name="blackForText">#4a4a4a</color>
     <color name="redForText">#d9534f</color>
 
+    <color name="main">#0DB7B7</color>
+    <color name="edit_background">#1A0DB7B7</color>
+
 </resources>
