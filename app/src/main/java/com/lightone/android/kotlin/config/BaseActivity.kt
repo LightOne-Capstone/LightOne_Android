@@ -2,25 +2,63 @@ package com.lightone.android.kotlin.config
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewbinding.ViewBinding
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import com.lightone.android.kotlin.util.LoadingDialog
 
-// 액티비티의 기본을 작성, 뷰 바인딩 활용
-abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflater) -> B) :
-    AppCompatActivity() {
-    protected lateinit var binding: B
-        private set
+abstract class BaseActivity<T : ViewDataBinding, R : BaseViewModel> : AppCompatActivity() {
+
+    lateinit var viewDataBinding: T
+
+    /**
+     * setContentView로 호출할 Layout의 리소스 Id.
+     * ex) R.layout.activity_main
+     */
+    abstract val layoutResourceId: Int
+
+    /**
+     * viewModel 로 쓰일 변수.
+     */
+    abstract val viewModel: R
+
+    /**
+     * 레이아웃을 띄운 직후 호출.
+     * 뷰나 액티비티의 속성 등을 초기화.
+     * ex) 리사이클러뷰, 툴바, 드로어뷰..
+     */
+    abstract fun initStartView()
+
+    /**
+     * 두번째로 호출.
+     * 데이터 바인딩 및 rxjava 설정.
+     * ex) rxjava observe, databinding observe..
+     */
+    abstract fun initDataBinding()
+
+    /**
+     * 바인딩 이후에 할 일을 여기에 구현.
+     * 그 외에 설정할 것이 있으면 이곳에서 설정.
+     * 클릭 리스너도 이곳에서 설정.
+     */
+    abstract fun initAfterBinding()
+
+    private var isSetBackButtonValid = false
+
     lateinit var mLoadingDialog: LoadingDialog
 
-    // 뷰 바인딩 객체를 받아서 inflate해서 화면을 만들어줌.
-    // 즉 매번 onCreate에서 setContentView를 하지 않아도 됨.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = inflate(layoutInflater)
-        setContentView(binding.root)
+        viewDataBinding = DataBindingUtil.setContentView(this, layoutResourceId)
+//        snackbarObserving()
+
+        initStartView()
+        initDataBinding()
+        initAfterBinding()
+
+        // 다크모드 비활성화
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
     // 로딩 다이얼로그, 즉 로딩창을 띄워줌.
@@ -34,10 +72,5 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
         if (mLoadingDialog.isShowing) {
             mLoadingDialog.dismiss()
         }
-    }
-
-    // 토스트를 쉽게 띄울 수 있게 해줌.
-    fun showCustomToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

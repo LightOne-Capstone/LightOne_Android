@@ -5,6 +5,8 @@
     android:id="@+id/progressBar"
     style="@style/SpinKitView.Circle"
     android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:maxWidth="65dip"
     android:maxHeight="65dip"
     android:minWidth="65dip"
