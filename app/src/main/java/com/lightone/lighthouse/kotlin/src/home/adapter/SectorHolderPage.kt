@@ -16,7 +16,6 @@ class SectorHolderPage internal constructor(itemView: View) : RecyclerView.ViewH
     private val stockcompany_txt: TextView
 
 
-
     var data: Sectors? = null
     fun onBind(data: Sectors) {
         this.data = data

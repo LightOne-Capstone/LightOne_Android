@@ -6,6 +6,7 @@ import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
 import com.lightone.lighthouse.kotlin.databinding.FragmentHomeBinding
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
+import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
@@ -19,6 +20,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     override val viewModel: HomeViewModel by viewModel()
     private val daysAdapter : DaysAdapter by inject()
+    private val sectorAdapter : SectorAdapter by inject()
 
     override fun initStartView() {
         days_recycler.run {
@@ -53,6 +55,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     }
 
     override fun initAfterBinding() {
+        // move detail
+//        sectorAdapter.setOnItemClickListener { a_view, a_position ->
+//            val item: Sectors = sectorAdapter.getItem(a_position)
+//
+//        }
     }
 
 }

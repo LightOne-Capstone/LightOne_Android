@@ -36,6 +36,10 @@ class SectorAdapter() :
         itemList.add(item)
     }
 
+    fun getItem(position: Int): Sectors {
+        return itemList.get(position)
+    }
+
     fun clear() {
         itemList.clear()
         this.notifyDataSetChanged()
