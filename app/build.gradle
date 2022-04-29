@@ -39,6 +39,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.material:material:1.2.1'
@@ -102,4 +106,7 @@ dependencies {
 
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:2.3.0")
+
+    // android mpchart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
