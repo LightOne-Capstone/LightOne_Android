@@ -2,10 +2,7 @@ package com.lightone.lighthouse.kotlin.di
 
 
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
-import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
-import com.lightone.lighthouse.kotlin.viewmodel.MainViewModel
-import com.lightone.lighthouse.kotlin.viewmodel.SearchViewModel
-import com.lightone.lighthouse.kotlin.viewmodel.SuggestViewModel
+import com.lightone.lighthouse.kotlin.viewmodel.*
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
@@ -33,6 +30,7 @@ var viewModelPart = module {
     viewModel { HomeViewModel() }
     viewModel { SearchViewModel() }
     viewModel { SuggestViewModel() }
+    viewModel { DetailViewModel() }
 }
 
 var myDiModule = listOf(retrofitPart, adapterPart, modelPart, viewModelPart)
