@@ -1,9 +1,11 @@
 package com.lightone.lighthouse.kotlin.src.home.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
@@ -14,11 +16,23 @@ class SectorAdapter() :
 
     private val itemList = ArrayList<Sectors>()
 
+
+    interface OnItemClickEventListener {
+        fun onItemClick(a_view: View?, a_position: Int)
+    }
+
+    private var mItemClickListener: OnItemClickEventListener? = null
+
+    fun moveItemClickListener(a_listener: OnItemClickEventListener) {
+        mItemClickListener = a_listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectorHolderPage {
         val context: Context = parent.context
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.sectors_item, parent, false)
-        return SectorHolderPage(view)
+
+        return SectorHolderPage(view, mItemClickListener)
     }
 
     override fun onBindViewHolder(holder: SectorHolderPage, position: Int) {
@@ -37,7 +51,7 @@ class SectorAdapter() :
     }
 
     fun getItem(position: Int): Sectors {
-        return itemList.get(position)
+        return itemList[position]
     }
 
     fun clear() {

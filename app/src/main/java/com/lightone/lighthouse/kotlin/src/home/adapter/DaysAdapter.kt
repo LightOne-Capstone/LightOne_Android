@@ -14,11 +14,21 @@ class DaysAdapter() :
 
     private val itemList = ArrayList<Days>()
 
+    interface OnItemClickEventListener {
+        fun onItemClick(a_view: View?, a_position: Int)
+    }
+
+    private var mItemClickListener: OnItemClickEventListener? = null
+
+    fun moveItemClickListener(a_listener: OnItemClickEventListener) {
+        mItemClickListener = a_listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysHolderPage {
         val context: Context = parent.context
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.days_item, parent, false)
-        return DaysHolderPage(view)
+        return DaysHolderPage(view, mItemClickListener)
     }
 
     override fun onBindViewHolder(holder: DaysHolderPage, position: Int) {

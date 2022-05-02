@@ -1,5 +1,6 @@
 package com.lightone.lighthouse.kotlin.src.home.adapter
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,7 +10,10 @@ import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 
 
-class DaysHolderPage internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class DaysHolderPage internal constructor(
+    itemView: View,
+    val mItemClickListener: DaysAdapter.OnItemClickEventListener?,
+    ) : RecyclerView.ViewHolder(itemView) {
     private val days_txt : TextView
     private val sector_recycler: RecyclerView
 
@@ -23,6 +27,12 @@ class DaysHolderPage internal constructor(itemView: View) : RecyclerView.ViewHol
             sectorAdapter.addItem(item)
         }
         sector_recycler.adapter = sectorAdapter
+
+        sectorAdapter.moveItemClickListener(object : SectorAdapter.OnItemClickEventListener {
+            override fun onItemClick(a_view: View?, a_position: Int) {
+                mItemClickListener!!.onItemClick(a_view, a_position)
+            }
+        })
         sector_recycler.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL,
             false)
     }

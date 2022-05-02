@@ -1,19 +1,16 @@
 package com.lightone.lighthouse.kotlin.src.search
 
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
-import com.lightone.lighthouse.kotlin.databinding.FragmentHomeBinding
 import com.lightone.lighthouse.kotlin.databinding.FragmentRecentSearchBinding
-import com.lightone.lighthouse.kotlin.src.home.model.Days
-import com.lightone.lighthouse.kotlin.src.home.model.Sectors
-import com.lightone.lighthouse.kotlin.src.search.adapter.RecentAdapter
+import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
 import com.lightone.lighthouse.kotlin.src.search.model.Recents
 import com.lightone.lighthouse.kotlin.viewmodel.RecentSearchViewModel
-import com.lightone.lighthouse.kotlin.viewmodel.SearchViewModel
-import okhttp3.internal.notify
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSearchViewModel>(R.layout.fragment_recent_search) {
 
@@ -21,7 +18,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
         get() = R.layout.fragment_recent_search // get() : 커스텀 접근자, 코틀린 문법
 
     override val viewModel: RecentSearchViewModel by viewModel()
-    private val recentAdapter : RecentAdapter by inject()
+    private val recentAdapter : RecentsAdapter by inject()
 
     override fun initStartView() {
         binding.recentRecycler.run {
@@ -50,6 +47,12 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
     }
 
     override fun initAfterBinding() {
+        // Recycler view item click event 처리
+        recentAdapter.delteItemClickListener(object : RecentsAdapter.OnItemClickEventListener {
+            override fun onItemClick(a_view: View?, a_position: Int) {
+                recentAdapter.deleteItem(a_position)
+            }
+        })
     }
 
 }

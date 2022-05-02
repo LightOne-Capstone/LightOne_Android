@@ -1,5 +1,8 @@
 package com.lightone.lighthouse.kotlin.src.home
 
+import android.view.View
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
@@ -9,6 +12,7 @@ import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
+import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
 import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
@@ -22,7 +26,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     private val daysAdapter : DaysAdapter by inject()
     private val sectorAdapter : SectorAdapter by inject()
 
+    lateinit var navController: NavController
+
     override fun initStartView() {
+        navController = Navigation.findNavController(requireView())
+
         binding.daysRecycler.run {
             adapter = daysAdapter
             layoutManager = LinearLayoutManager(context).apply {
@@ -44,9 +52,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         sectorList.add(sectors3)
         sectorList.add(sectors4)
 
-        // @SerializedName("days") val days: String,
-        //    @SerializedName("sectors") val sectors: List<Sectors>
-
         for(i in 0..6){
             val days = Days("2022.09.01 MON", sectorList)
             daysAdapter.addItem(days)
@@ -56,10 +61,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     override fun initAfterBinding() {
         // move detail
-//        sectorAdapter.setOnItemClickListener { a_view, a_position ->
-//            val item: Sectors = sectorAdapter.getItem(a_position)
-//
-//        }
+        daysAdapter.moveItemClickListener(object : DaysAdapter.OnItemClickEventListener {
+            override fun onItemClick(a_view: View?, a_position: Int) {
+                navController.navigate(R.id.action_homeFragment_to_detailFragment)
+            }
+        })
     }
 
 }
