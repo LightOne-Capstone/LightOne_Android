@@ -9,11 +9,17 @@ import androidx.databinding.ViewDataBinding
 
 import androidx.fragment.app.Fragment
 import com.lightone.lighthouse.kotlin.util.LoadingDialog
+import android.R.attr.data
+
+import android.R
+import android.R.attr
+import android.view.LayoutInflater
+import android.view.ViewGroup
 
 
 abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel>(layoutId: Int) : Fragment(layoutId) {
 
-    lateinit var viewDataBinding: T
+    lateinit var binding: T
 
     /**
      * setContentView로 호출할 Layout의 리소스 Id.
@@ -51,11 +57,18 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel>(layoutId: In
 
     lateinit var mLoadingDialog: LoadingDialog
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDataBinding = DataBindingUtil.bind(view)!!
 
-//        snackbarObserving()
         initStartView()
         initDataBinding()
         initAfterBinding()
@@ -63,6 +76,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel>(layoutId: In
         // 다크모드 비활성화
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
+
 
     // 로딩 다이얼로그, 즉 로딩창을 띄워줌.
     // 네트워크가 시작될 때 사용자가 무작정 기다리게 하지 않기 위해 작성.

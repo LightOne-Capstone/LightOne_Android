@@ -20,6 +20,7 @@
     <color name="natural5">#858C94</color>
     <color name="natural8">#EBEEF2</color>
     <color name="gray">#8A8A8A</color>
-
+    <color name="tab_gray">#D6D4D4</color>
+    <color name="main_background">#E5E5E5</color>
 
 </resources>

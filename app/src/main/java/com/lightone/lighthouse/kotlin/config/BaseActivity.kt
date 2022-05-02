@@ -10,7 +10,7 @@ import com.lightone.lighthouse.kotlin.util.LoadingDialog
 
 abstract class BaseActivity<T : ViewDataBinding, R : BaseViewModel> : AppCompatActivity() {
 
-    lateinit var viewDataBinding: T
+    lateinit var binding: T
 
     /**
      * setContentView로 호출할 Layout의 리소스 Id.
@@ -50,7 +50,7 @@ abstract class BaseActivity<T : ViewDataBinding, R : BaseViewModel> : AppCompatA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewDataBinding = DataBindingUtil.setContentView(this, layoutResourceId)
+        binding = DataBindingUtil.setContentView(this, layoutResourceId)
 //        snackbarObserving()
 
         initStartView()

@@ -21,16 +21,51 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/search_edit_custom"
             android:drawableLeft="@drawable/ic_bottom_search"
-            android:drawablePadding="18dp"
+            android:drawablePadding="10dp"
             android:hint="검색"
+            android:maxLines="1"
             android:textColorHint="@color/main"
             android:textColor="@color/main"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:paddingLeft="13dp"
-            android:paddingRight="13dp"
+            android:paddingRight="50dp"
             android:layout_margin="16dp">
         </EditText>
+
+        <ImageView
+            android:id="@+id/search_close_btn"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/search_txt"
+            app:layout_constraintBottom_toBottomOf="@id/search_txt"
+            app:layout_constraintRight_toRightOf="@id/search_txt"
+            android:layout_marginRight="16dp">
+        </ImageView>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabSelectedTextColor="@color/main"
+            app:tabIndicatorColor="@color/main"
+            app:tabPaddingTop="16dp"
+            app:tabPaddingBottom="16dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            app:tabBackground="@drawable/tab_underline"
+            app:tabTextAppearance="@style/tab_text"
+            app:tabTextColor="@color/tab_gray"
+            app:layout_constraintTop_toBottomOf="@id/search_txt"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -23,7 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     private val sectorAdapter : SectorAdapter by inject()
 
     override fun initStartView() {
-        days_recycler.run {
+        binding.daysRecycler.run {
             adapter = daysAdapter
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
