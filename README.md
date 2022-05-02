@@ -9,3 +9,4 @@ Kotlin ver# LightOne_Android
 1. 2022.04.27(WEN) -> Base Settings(Base Activity, Base Fragment, Base ViewModel, Koin, My Application, Dependency, navigation graph, bottom navi)
 2. 2022.04.28(THU) -> Home Fragment (Recycler Adapter)
 3. 2022.04.29(FRI) -> Detail Fragment (doing, MPchart)
+4. 2022.05.02(MON) -> Search Fragment (Tablayout+ViewPager2)
