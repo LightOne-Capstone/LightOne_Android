@@ -10,3 +10,4 @@ Kotlin ver# LightOne_Android
 2. 2022.04.28(THU) -> Home Fragment (Recycler Adapter)
 3. 2022.04.29(FRI) -> Detail Fragment (doing, MPchart)
 4. 2022.05.02(MON) -> Search Fragment (Tablayout+ViewPager2), Sector item click listener, detail fragment to home action
+5. 2022.05.03(THU) -> Detail Fragment (Chart use Dummy data)
