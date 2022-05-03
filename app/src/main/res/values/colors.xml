@@ -24,6 +24,7 @@
     <color name="main_background">#E5E5E5</color>
     <color name="chart_top">#4D0DB7B7</color>
     <color name="chart_bottom">#000DB7B7</color>
+    <color name="gray2">#8A8E85</color>
 
 
 </resources>

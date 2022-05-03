@@ -34,13 +34,13 @@
             android:fillViewport="true"
             android:id="@+id/day_scroll"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:paddingBottom="80dp">
+            android:layout_marginRight="16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/days"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="80dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/days_recycler"
