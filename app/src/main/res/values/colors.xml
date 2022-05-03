@@ -22,5 +22,8 @@
     <color name="gray">#8A8A8A</color>
     <color name="tab_gray">#D6D4D4</color>
     <color name="main_background">#E5E5E5</color>
+    <color name="chart_top">#4D0DB7B7</color>
+    <color name="chart_bottom">#000DB7B7</color>
+
 
 </resources>
