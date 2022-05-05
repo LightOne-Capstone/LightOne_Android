@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lightone.lighthouse.kotlin.src.main.MainActivity"
+            android:name="com.lightone.lighthouse.kotlin.src.NavHostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

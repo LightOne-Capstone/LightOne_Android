@@ -26,6 +26,6 @@
     <color name="chart_bottom">#000DB7B7</color>
     <color name="gray2">#8A8E85</color>
     <color name="natural_black">#09101D</color>
-
+    <color name="sort_background">#1A757575</color>
 
 </resources>

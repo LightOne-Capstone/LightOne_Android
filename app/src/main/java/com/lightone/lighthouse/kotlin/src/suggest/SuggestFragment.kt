@@ -54,7 +54,7 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
         // move detail
         suggestAdapter.moveItemClickListener(object : SuggestAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                navController.navigate(R.id.action_homeFragment_to_detailFragment)
+                navController.navigate(R.id.action_suggestFragment_to_suggestDetailFragment)
             }
         })
     }

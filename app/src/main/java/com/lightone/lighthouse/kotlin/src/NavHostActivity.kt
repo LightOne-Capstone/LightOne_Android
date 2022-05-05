@@ -1,4 +1,4 @@
-package com.lightone.lighthouse.kotlin.src.main
+package com.lightone.lighthouse.kotlin.src
 
 import android.view.View
 import androidx.navigation.NavController
@@ -7,17 +7,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseActivity
-import com.lightone.lighthouse.kotlin.databinding.ActivityMainBinding
-import com.lightone.lighthouse.kotlin.src.home.HomeFragment
-import com.lightone.lighthouse.kotlin.src.suggest.SuggestFragment
+import com.lightone.lighthouse.kotlin.databinding.ActivityNavhostBinding
 import com.lightone.lighthouse.kotlin.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+class NavHostActivity : BaseActivity<ActivityNavhostBinding, MainViewModel>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.activity_main // get() : 커스텀 접근자, 코틀린 문법
+        get() = R.layout.activity_navhost // get() : 커스텀 접근자, 코틀린 문법
 
     override val viewModel: MainViewModel by viewModel()
 
@@ -44,17 +41,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 R.id.homeFragment -> showBottomNav()
                 R.id.suggestFragment -> showBottomNav()
                 R.id.searchFragment -> showBottomNav()
+                R.id.suggestDetailFragment -> showBottomNav()
                 else -> hideBottomNav()
             }
         }
-        bottom_navi.setupWithNavController(navController)
+        binding.bottomNavi.setupWithNavController(navController)
     }
 
     private fun showBottomNav() {
-        bottom_navi.visibility = View.VISIBLE
+        binding.bottomNavi.visibility = View.VISIBLE
     }
 
     private fun hideBottomNav() {
-        bottom_navi.visibility = View.GONE
+        binding.bottomNavi.visibility = View.GONE
     }
 }

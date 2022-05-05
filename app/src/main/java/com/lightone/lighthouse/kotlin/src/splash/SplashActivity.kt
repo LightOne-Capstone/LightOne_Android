@@ -7,7 +7,7 @@ import com.lightone.lighthouse.kotlin.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.config.BaseActivity
 import com.lightone.lighthouse.kotlin.databinding.ActivitySplashBinding
-import com.lightone.lighthouse.kotlin.src.main.MainActivity
+import com.lightone.lighthouse.kotlin.src.NavHostActivity
 import com.lightone.lighthouse.kotlin.viewmodel.SplashViewModel
 
 
@@ -22,7 +22,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
 
     override fun initDataBinding() {
         Handler(Looper.getMainLooper()).postDelayed({
-            var intent = Intent(this, MainActivity::class.java)
+            var intent = Intent(this, NavHostActivity::class.java)
             startActivity(intent)
             finish()
         }, 1500)
