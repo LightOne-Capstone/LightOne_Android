@@ -12,9 +12,7 @@ import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
-import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
 import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {

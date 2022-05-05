@@ -4,6 +4,7 @@ package com.lightone.lighthouse.kotlin.di
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
+import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.viewmodel.*
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
@@ -25,6 +26,9 @@ var adapterPart = module {
     }
     factory {
         RecentsAdapter()
+    }
+    factory {
+        SuggestAdapter()
     }
 }
 
