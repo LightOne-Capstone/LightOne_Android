@@ -1,4 +1,4 @@
-package com.lightone.lighthouse.kotlin.src.suggest_detail
+package com.lightone.lighthouse.kotlin.src.scrap
 
 import android.graphics.Color
 import android.view.View
@@ -10,24 +10,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
+import com.lightone.lighthouse.kotlin.databinding.FragmentScrapBinding
 import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestBinding
 import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestDetailBinding
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
+import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
 import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
+import com.lightone.lighthouse.kotlin.viewmodel.ScraplViewModel
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestDetailViewModel
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestViewModel
 import org.koin.android.ext.android.inject
 
-class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, SuggestDetailViewModel>(R.layout.fragment_suggest_detail) {
+class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layout.fragment_scrap) {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_suggest_detail // get() : 커스텀 접근자, 코틀린 문법
+        get() = R.layout.fragment_scrap // get() : 커스텀 접근자, 코틀린 문법
 
-    override val viewModel: SuggestDetailViewModel by viewModel()
-    private val suggestsectorAdapter : SuggestSectorAdapter by inject()
+    override val viewModel: ScraplViewModel by viewModel()
+    private val scrapAdapter : ScrapeAdapter by inject()
 
     lateinit var navController: NavController
 
@@ -35,7 +38,7 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         navController = Navigation.findNavController(requireView())
 
         binding.suggestRecycler.run {
-            adapter = suggestsectorAdapter
+            adapter = scrapAdapter
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
@@ -49,71 +52,69 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
         val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
 
-        suggestsectorAdapter.addItem(sectors1)
-        suggestsectorAdapter.addItem(sectors2)
-        suggestsectorAdapter.addItem(sectors3)
-        suggestsectorAdapter.addItem(sectors4)
-        suggestsectorAdapter.notifyDataSetChanged()
-
+        scrapAdapter.addItem(sectors1)
+        scrapAdapter.addItem(sectors2)
+        scrapAdapter.addItem(sectors3)
+        scrapAdapter.addItem(sectors4)
+        scrapAdapter.notifyDataSetChanged()
     }
 
     override fun initAfterBinding() {
         // move detail
-        suggestsectorAdapter.moveItemClickListener(object : SuggestSectorAdapter.OnItemClickEventListener {
+        scrapAdapter.moveItemClickListener(object : ScrapeAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                navController.navigate(R.id.action_suggestDetailFragment_to_detailFragment)
+                navController.navigate(R.id.action_scrapFragment_to_detailFragment)
             }
         })
 
         binding.backBtn.setOnClickListener {
-            binding.sortBtn.setImageResource(R.drawable.ic_sort_click)
             navController.popBackStack()
         }
 
         binding.sortBtn.setOnClickListener {
             sortClear(binding.sortBtn, binding.sortBuyBtn, binding.sortHoldBtn, binding.sortNrBtn)
 
-            suggestsectorAdapter.clear()
+            scrapAdapter.clear()
             val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
             val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
             val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
             val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
 
-            suggestsectorAdapter.addItem(sectors1)
-            suggestsectorAdapter.addItem(sectors2)
-            suggestsectorAdapter.addItem(sectors3)
-            suggestsectorAdapter.addItem(sectors4)
-            suggestsectorAdapter.notifyDataSetChanged()
+            scrapAdapter.addItem(sectors1)
+            scrapAdapter.addItem(sectors2)
+            scrapAdapter.addItem(sectors3)
+            scrapAdapter.addItem(sectors4)
+            scrapAdapter.notifyDataSetChanged()
         }
 
         binding.sortBuyBtn.setOnClickListener {
             binding.sortBtn.setImageResource(R.drawable.ic_sort_click)
-            suggestsectorAdapter.clear()
+            scrapAdapter.clear()
             sortClick(binding.sortBtn, binding.sortBuyBtn, binding.sortNrBtn, binding.sortHoldBtn, "BUY")
             val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
             val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
 
-            suggestsectorAdapter.addItem(sectors1)
-            suggestsectorAdapter.addItem(sectors4)
-            suggestsectorAdapter.notifyDataSetChanged()
+            scrapAdapter.addItem(sectors1)
+            scrapAdapter.addItem(sectors4)
+            scrapAdapter.notifyDataSetChanged()
         }
 
         binding.sortNrBtn.setOnClickListener {
-            suggestsectorAdapter.clear()
+            scrapAdapter.clear()
             sortClick(binding.sortBtn, binding.sortNrBtn, binding.sortBuyBtn, binding.sortHoldBtn, "NR")
             val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
 
-            suggestsectorAdapter.addItem(sectors2)
-            suggestsectorAdapter.notifyDataSetChanged()
+            scrapAdapter.addItem(sectors2)
+            scrapAdapter.notifyDataSetChanged()
         }
 
         binding.sortHoldBtn.setOnClickListener {
-            suggestsectorAdapter.clear()
+            scrapAdapter.clear()
             sortClick(binding.sortBtn, binding.sortHoldBtn, binding.sortNrBtn, binding.sortBuyBtn, "HOLD")
             val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
 
-            suggestsectorAdapter.addItem(sectors3)
-            suggestsectorAdapter.notifyDataSetChanged()
+            scrapAdapter.addItem(sectors3)
+            scrapAdapter.notifyDataSetChanged()
         }
     }
 

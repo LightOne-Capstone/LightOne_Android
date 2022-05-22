@@ -23,8 +23,20 @@
             android:layout_margin="16dp"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="Light House"/>
+            android:textColor="@color/main"
+            android:text="Lighthouse"/>
+
+        <ImageView
+            android:id="@+id/scrap_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/service_name_txt"
+            app:layout_constraintBottom_toBottomOf="@id/service_name_txt"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/ic_scrap"
+            android:background="@drawable/back_custom"
+            android:padding="12dp"
+            android:layout_margin="16dp"/>
 
 
         <androidx.core.widget.NestedScrollView
@@ -32,9 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:id="@+id/day_scroll"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:id="@+id/day_scroll">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/days"

@@ -69,7 +69,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
 
     override fun initAfterBinding() {
         binding.backBtn.setOnClickListener {
-            navController.navigate(R.id.action_detailFragment_to_homeFragment)
+            navController.popBackStack()
         }
     }
 }

@@ -38,8 +38,6 @@
             app:menu="@menu/menu_main_bottom_nav"
             android:background="@drawable/main_bottom_custom"/>
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

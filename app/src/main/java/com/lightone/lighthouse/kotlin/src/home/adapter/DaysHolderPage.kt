@@ -4,10 +4,13 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Days
+import com.lightone.lighthouse.kotlin.util.ItemDecoration
+import com.lightone.lighthouse.kotlin.util.ScrapTouchCallback
 
 
 class DaysHolderPage internal constructor(
@@ -26,15 +29,29 @@ class DaysHolderPage internal constructor(
         data.sectors.forEach { item ->
             sectorAdapter.addItem(item)
         }
-        sector_recycler.adapter = sectorAdapter
 
         sectorAdapter.moveItemClickListener(object : SectorAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
                 mItemClickListener!!.onItemClick(a_view, a_position)
             }
         })
-        sector_recycler.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL,
-            false)
+
+        val swipeHelperCallback = ScrapTouchCallback().apply {
+            setClamp(200f)
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+        itemTouchHelper.attachToRecyclerView(sector_recycler)
+
+        sector_recycler.apply {
+            sector_recycler.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL,
+                false)
+            adapter = sectorAdapter
+            addItemDecoration(ItemDecoration())
+            setOnTouchListener { _, _ ->
+                swipeHelperCallback.removePreviousClamp(this)
+                false
+            }
+        }
     }
 
     init {
