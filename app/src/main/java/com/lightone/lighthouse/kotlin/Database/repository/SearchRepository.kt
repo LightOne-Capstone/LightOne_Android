@@ -2,24 +2,23 @@ package com.lightone.lighthouse.kotlin.Database.repository
 
 import androidx.lifecycle.LiveData
 import com.lightone.lighthouse.kotlin.Database.dao.SearchDao
-import com.lightone.lighthouse.kotlin.Database.model.Search
-import com.lightone.lighthouse.kotlin.Database.model.UserScrap
+import com.lightone.lighthouse.kotlin.Database.model.UserSearch
 
 
 class SearchRepository(val dao: SearchDao) {
-    fun insert(search: Search) {
+    fun insert(search: UserSearch) {
         dao.insert(search)
     }
 
-    fun getAll(): LiveData<List<Search>> {
+    fun getAll(): LiveData<List<UserSearch>> {
         return dao.getAll()
     }
 
-    fun deleteScrap(id: Int){
-        dao.deleteScrap(id)
+    fun deleteSearch(contents: String){
+        dao.deleteScrap(contents)
     }
 
-    fun deleteAll(): Boolean {
-        return dao.deleteAll()
+    fun deleteAll() {
+        dao.deleteAll()
     }
 }

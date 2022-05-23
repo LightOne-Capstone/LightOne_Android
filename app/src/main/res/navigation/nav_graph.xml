@@ -33,6 +33,16 @@
         tools:layout="@layout/fragment_search" />
 
     <fragment
+        android:id="@+id/recentFragment"
+        android:name="com.lightone.lighthouse.kotlin.src.search.RecentSearchFragment"
+        android:label="fragment_recent_search"
+        tools:layout="@layout/fragment_recent_search" >
+        <action
+            android:id="@+id/action_recentFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/detailFragment"
         android:name="com.lightone.lighthouse.kotlin.src.detail.DetailFragment"
         android:label="fragment_detail"

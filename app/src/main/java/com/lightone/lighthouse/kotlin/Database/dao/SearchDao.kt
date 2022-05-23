@@ -2,21 +2,20 @@ package com.lightone.lighthouse.kotlin.Database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.lightone.lighthouse.kotlin.Database.model.Search
-import com.lightone.lighthouse.kotlin.Database.model.UserScrap
+import com.lightone.lighthouse.kotlin.Database.model.UserSearch
 
 @Dao
 interface SearchDao {
     @Query("SELECT * FROM search")
-    fun getAll(): LiveData<List<Search>>
+    fun getAll(): LiveData<List<UserSearch>>
 
     /* import android.arch.persistence.room.OnConflictStrategy.REPLACE */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(search: Search)
+    fun insert(search: UserSearch)
 
     @Query("DELETE from search")
-    fun deleteAll(): Boolean
+    fun deleteAll()
 
-    @Query("DELETE FROM search WHERE id = :id")
-    fun deleteScrap(id: Int)
+    @Query("DELETE FROM search WHERE contents = :contents")
+    fun deleteScrap(contents: String)
 }

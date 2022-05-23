@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.Database.model.UserSearch
 import com.lightone.lighthouse.kotlin.R
-import com.lightone.lighthouse.kotlin.src.search.model.Recents
+import com.lightone.lighthouse.kotlin.src.search.model.Search
 
-class RecentsAdapter() :
-    RecyclerView.Adapter<RecentsHolderPage>(){
-    var datas = ArrayList<UserSearch>()
+class SearchAdapter() :
+    RecyclerView.Adapter<SearchHolderPage>(){
+    var datas = ArrayList<Search>()
 
-    private val itemList = ArrayList<UserSearch>()
+    private val itemList = ArrayList<Search>()
 
     interface OnItemClickEventListener {
         fun onItemClick(a_view: View?, a_position: Int)
@@ -21,20 +21,20 @@ class RecentsAdapter() :
 
     private var mItemClickListener: OnItemClickEventListener? = null
 
-    fun delteItemClickListener(a_listener: OnItemClickEventListener) {
+    fun moveItemClickListener(a_listener: OnItemClickEventListener) {
         mItemClickListener = a_listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentsHolderPage {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchHolderPage {
         val context: Context = parent.context
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.recents_item, parent, false)
-        return RecentsHolderPage(view, mItemClickListener!!)
+        return SearchHolderPage(view, mItemClickListener!!)
     }
 
-    override fun onBindViewHolder(holder: RecentsHolderPage, position: Int) {
-        if (holder is RecentsHolderPage) {
-            val viewHolder: RecentsHolderPage = holder as RecentsHolderPage
+    override fun onBindViewHolder(holder: SearchHolderPage, position: Int) {
+        if (holder is SearchHolderPage) {
+            val viewHolder: SearchHolderPage = holder as SearchHolderPage
             viewHolder.onBind(itemList[position])
         }
     }
@@ -43,11 +43,11 @@ class RecentsAdapter() :
         return itemList.size
     }
 
-    fun addItem(item: UserSearch) {
+    fun addItem(item: Search) {
         itemList.add(item)
     }
 
-    fun getItem(position: Int): UserSearch {
+    fun getItem(position: Int): Search {
         return itemList.get(position)
     }
 

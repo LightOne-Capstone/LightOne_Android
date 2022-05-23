@@ -19,6 +19,8 @@ import android.R.id.edit
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import com.lightone.lighthouse.kotlin.Database.model.UserSearch
 
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.layout.fragment_search) {
@@ -27,6 +29,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
         get() = R.layout.fragment_search // get() : 커스텀 접근자, 코틀린 문법
 
     override val viewModel: SearchViewModel by viewModel()
+    var recent = ""
 
     override fun initStartView() {
         val viewPager: ViewPager2 = binding.viewPager
@@ -43,20 +46,24 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
     }
 
     override fun initDataBinding() {
+        viewModel.insertsuccessResponse.observe(this, Observer {
+            if(it){
+                RecentSearchFragment().search.postValue(recent)
+            }
+        })
     }
 
     override fun initAfterBinding() {
         binding.searchTxt.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 // 입력난에 변화가 있을 시 조치
-                if(s.length != 0){
+                if(s.isNotEmpty()){
                     binding.searchCloseBtn.visibility = View.VISIBLE
                 }
                 else{
                     binding.searchCloseBtn.visibility = View.GONE
                 }
             }
-
             override fun afterTextChanged(arg0: Editable) = Unit
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
         })
@@ -65,6 +72,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 var search = binding.searchTxt.text.toString()
                 if(search != null){
+                    recent = search
+                    val request = UserSearch(search)
+                    viewModel.search(request)
                     return@OnEditorActionListener true
                 }
             }
