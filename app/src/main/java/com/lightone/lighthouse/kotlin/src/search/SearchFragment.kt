@@ -17,6 +17,8 @@ import android.text.TextWatcher
 
 import android.R.id.edit
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.layout.fragment_search) {
@@ -35,9 +37,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
 
         val tabTitles = listOf("최근 검색", "태그 검색")
         // 2. TabLayout과 ViewPager2를 연결하고, TabItem의 메뉴명을 설정한다.
-        TabLayoutMediator(tabLayout, viewPager, {tab, position ->
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
-        }).attach()
+        }.attach()
     }
 
     override fun initDataBinding() {
@@ -57,6 +59,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
 
             override fun afterTextChanged(arg0: Editable) = Unit
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+        })
+
+        binding.searchTxt.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                var search = binding.searchTxt.text.toString()
+                if(search != null){
+                    return@OnEditorActionListener true
+                }
+            }
+            false
         })
 
         binding.searchCloseBtn.setOnClickListener {

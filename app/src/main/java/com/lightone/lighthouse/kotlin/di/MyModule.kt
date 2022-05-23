@@ -7,12 +7,13 @@ import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
 import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
+import com.lightone.lighthouse.kotlin.src.searchdetail.model.SearchDataModel
+import com.lightone.lighthouse.kotlin.src.searchdetail.service.SearchDataImpl
 import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
 import com.lightone.lighthouse.kotlin.viewmodel.*
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
-import java.util.*
 
 /**
  * MyModule.kt
@@ -57,15 +58,15 @@ var adapterPart = module {
 }
 
 var modelPart = module {
-//    factory<DataModel> {
-//        DataModelImpl(get())
-//    }
+    factory<SearchDataModel> {
+        SearchDataImpl(get())
+    }
 }
 
 var viewModelPart = module {
     viewModel { MainViewModel() }
     viewModel { HomeViewModel() }
-    viewModel { SearchViewModel() }
+    viewModel { SearchViewModel(get(), get()) }
     viewModel { DetailViewModel() }
     viewModel { SuggestViewModel() }
     viewModel { SuggestDetailViewModel() }

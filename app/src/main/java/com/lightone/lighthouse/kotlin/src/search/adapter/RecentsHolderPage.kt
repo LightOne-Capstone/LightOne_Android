@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.lightone.lighthouse.kotlin.Database.model.Search
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.search.model.Recents
 
@@ -16,11 +17,11 @@ class RecentsHolderPage internal constructor(
     private val contents_txt :TextView
     private val delete_btn :ImageView
 
-    var data: Recents? = null
-    fun onBind(data: Recents) {
+    var data: Search? = null
+    fun onBind(data: Search) {
         this.data = data
 
-        contents_txt.text = data.contents
+        contents_txt.text = data.name
 
         delete_btn.setOnClickListener(View.OnClickListener { a_view ->
             val position = absoluteAdapterPosition

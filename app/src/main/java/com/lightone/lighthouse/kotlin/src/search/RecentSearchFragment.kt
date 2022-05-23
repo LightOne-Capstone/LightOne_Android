@@ -1,6 +1,8 @@
 package com.lightone.lighthouse.kotlin.src.search
 
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
@@ -31,19 +33,14 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
     }
 
     override fun initDataBinding() {
-        var recentList = ArrayList<Recents>()
-        val items1 = Recents("삼성전자")
-        val items2 = Recents("카카오")
-        val items3 = Recents("위메프")
-        val items4 = Recents("위대한 상상")
+        viewModel.getSearchList().observe(this, Observer {
+            recentAdapter.clear()
+            it.forEach { item ->
+                recentAdapter.addItem(item)
+            }
+            recentAdapter.notifyDataSetChanged()
+        })
 
-        for(i in 0..4){
-            recentAdapter.addItem(items1)
-            recentAdapter.addItem(items2)
-            recentAdapter.addItem(items3)
-            recentAdapter.addItem(items4)
-        }
-        recentAdapter.notifyDataSetChanged()
     }
 
     override fun initAfterBinding() {

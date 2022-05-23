@@ -1,9 +1,11 @@
 package com.lightone.lighthouse.kotlin.Database.repository
 
+import androidx.lifecycle.LiveData
+import com.lightone.lighthouse.kotlin.Database.dao.UserScrapDao
 import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 
 
-class UserScrapRepository(val dao: UserScrapRepository) {
+class UserScrapRepository(val dao: UserScrapDao) {
     fun insert(userScrap: UserScrap) {
         dao.insert(userScrap)
     }
@@ -12,7 +14,7 @@ class UserScrapRepository(val dao: UserScrapRepository) {
         dao.deleteScrap(id)
     }
 
-    fun getAll(): List<UserScrap> {
+    fun getAll(): LiveData<List<UserScrap>> {
         return dao.getAll()
     }
 }

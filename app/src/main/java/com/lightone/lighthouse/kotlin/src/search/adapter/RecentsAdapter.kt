@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lightone.lighthouse.kotlin.Database.model.Search
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.search.model.Recents
 
 class RecentsAdapter() :
     RecyclerView.Adapter<RecentsHolderPage>(){
-    var datas = ArrayList<Recents>()
+    var datas = ArrayList<Search>()
 
-    private val itemList = ArrayList<Recents>()
+    private val itemList = ArrayList<Search>()
 
     interface OnItemClickEventListener {
         fun onItemClick(a_view: View?, a_position: Int)
@@ -42,11 +43,11 @@ class RecentsAdapter() :
         return itemList.size
     }
 
-    fun addItem(item: Recents) {
+    fun addItem(item: Search) {
         itemList.add(item)
     }
 
-    fun getItem(position: Int): Recents {
+    fun getItem(position: Int): Search {
         return itemList.get(position)
     }
 
