@@ -1,7 +1,5 @@
 package com.lightone.lighthouse.kotlin.src.search
 
-import android.R.id
-import androidx.core.widget.addTextChangedListener
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -15,11 +13,12 @@ import android.text.Editable
 
 import android.text.TextWatcher
 
-import android.R.id.edit
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.lightone.lighthouse.kotlin.Database.model.UserSearch
 
 
@@ -31,11 +30,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
     override val viewModel: SearchViewModel by viewModel()
     var recent = ""
 
+    lateinit var viewpagerFragmentAdapter: SearchViewpagerFragmentAdapter
+    lateinit var navController: NavController
+
     override fun initStartView() {
+        navController = Navigation.findNavController(requireView())
+
         val viewPager: ViewPager2 = binding.viewPager
         val tabLayout: TabLayout = binding.tabLayout
 
-        val viewpagerFragmentAdapter = SearchViewpagerFragmentAdapter(this)
+        viewpagerFragmentAdapter = SearchViewpagerFragmentAdapter(this)
         viewPager.adapter = viewpagerFragmentAdapter
 
         val tabTitles = listOf("최근 검색", "태그 검색")
@@ -48,7 +52,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
     override fun initDataBinding() {
         viewModel.insertsuccessResponse.observe(this, Observer {
             if(it){
-                RecentSearchFragment().search.postValue(recent)
+                viewpagerFragmentAdapter.setFragment(0, RecentSearchFragment(recent))
             }
         })
     }

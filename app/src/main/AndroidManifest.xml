@@ -27,7 +27,8 @@
         <activity
             android:name="com.lightone.lighthouse.kotlin.src.NavHostActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing"/>
     </application>
 
 </manifest>

@@ -71,5 +71,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
         binding.backBtn.setOnClickListener {
             navController.popBackStack()
         }
+
+//        binding.scrapBtn.setOnClickListener {
+//            navController.navigate(R.id)
+//        }
     }
 }

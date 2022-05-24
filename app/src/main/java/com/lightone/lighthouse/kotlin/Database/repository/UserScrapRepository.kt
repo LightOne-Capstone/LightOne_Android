@@ -5,7 +5,7 @@ import com.lightone.lighthouse.kotlin.Database.dao.UserScrapDao
 import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 
 
-class UserScrapRepository(val dao: UserScrapDao) {
+class UserScrapRepository(val dao: UserScrapRepository) {
     fun insert(userScrap: UserScrap) {
         dao.insert(userScrap)
     }

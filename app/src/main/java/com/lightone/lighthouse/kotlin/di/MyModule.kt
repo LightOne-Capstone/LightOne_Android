@@ -4,24 +4,38 @@ package com.lightone.lighthouse.kotlin.di
 import androidx.room.Room
 import com.lightone.lighthouse.kotlin.Database.UserScrapDatabase
 import com.lightone.lighthouse.kotlin.Database.UserSearchDatabase
+import com.lightone.lighthouse.kotlin.config.MyApplication.Companion.client
+import com.lightone.lighthouse.kotlin.config.MyConstant.Companion.BASE_URL
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
 import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
-import com.lightone.lighthouse.kotlin.src.search.adapter.SearchAdapter
 import com.lightone.lighthouse.kotlin.src.search.model.SearchDataModel
+import com.lightone.lighthouse.kotlin.src.search.service.SearchAPI
 import com.lightone.lighthouse.kotlin.src.search.service.SearchDataImpl
 import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
 import com.lightone.lighthouse.kotlin.viewmodel.*
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * MyModule.kt
  */
 
 var retrofitPart = module {
+    single<SearchAPI> {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SearchAPI::class.java)
+    }
 }
 
 var roomPart = module {
@@ -60,9 +74,6 @@ var adapterPart = module {
     }
     factory {
         RecentsAdapter()
-    }
-    factory {
-        SearchAdapter()
     }
     factory {
         SuggestAdapter()

@@ -5,5 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class Search(
     @SerializedName("id") val id: String,
     @SerializedName("name") val name: String,
-    @SerializedName("category") val category: String
+    @SerializedName("category") val category: String,
+    var check: Boolean = false
     )

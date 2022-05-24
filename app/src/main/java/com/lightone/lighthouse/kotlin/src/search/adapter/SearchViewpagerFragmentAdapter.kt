@@ -8,7 +8,7 @@ import com.lightone.lighthouse.kotlin.src.search.TagSearchFragment
 
 class SearchViewpagerFragmentAdapter(searchFragment: SearchFragment): FragmentStateAdapter(searchFragment) {
 
-    val fragmentList = listOf<Fragment>(RecentSearchFragment(), TagSearchFragment())
+    var fragmentList = mutableListOf<Fragment>(RecentSearchFragment(null), TagSearchFragment())
 
     override fun getItemCount(): Int {
         return fragmentList.size
@@ -21,6 +21,10 @@ class SearchViewpagerFragmentAdapter(searchFragment: SearchFragment): FragmentSt
     override fun getItemId(position: Int): Long {
         // generate new id
         return fragmentList[position].hashCode().toLong()
+    }
+
+    fun setFragment(position: Int, refresh: Fragment){
+        fragmentList[position] = refresh
     }
 
     override fun containsItem(itemId: Long): Boolean {

@@ -5,7 +5,7 @@ import com.lightone.lighthouse.kotlin.Database.dao.SearchDao
 import com.lightone.lighthouse.kotlin.Database.model.UserSearch
 
 
-class SearchRepository(val dao: SearchDao) {
+class SearchRepository(val dao: SearchRepository) {
     fun insert(search: UserSearch) {
         dao.insert(search)
     }
@@ -14,8 +14,8 @@ class SearchRepository(val dao: SearchDao) {
         return dao.getAll()
     }
 
-    fun deleteSearch(contents: String){
-        dao.deleteScrap(contents)
+    fun deleteSearch(idx: String){
+        dao.deleteSearch(idx)
     }
 
     fun deleteAll() {
