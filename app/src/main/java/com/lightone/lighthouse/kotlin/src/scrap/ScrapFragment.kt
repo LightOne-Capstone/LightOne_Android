@@ -47,10 +47,10 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
     }
 
     override fun initDataBinding() {
-        val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
-        val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
-        val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-        val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
+        val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
+        val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
+        val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
+        val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
 
         scrapAdapter.addItem(sectors1)
         scrapAdapter.addItem(sectors2)
@@ -75,10 +75,10 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             sortClear(binding.sortBtn, binding.sortBuyBtn, binding.sortHoldBtn, binding.sortNrBtn)
 
             scrapAdapter.clear()
-            val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
-            val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
-            val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-            val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
+            val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
+            val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
+            val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
+            val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
 
             scrapAdapter.addItem(sectors1)
             scrapAdapter.addItem(sectors2)
@@ -91,8 +91,8 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             binding.sortBtn.setImageResource(R.drawable.ic_sort_click)
             scrapAdapter.clear()
             sortClick(binding.sortBtn, binding.sortBuyBtn, binding.sortNrBtn, binding.sortHoldBtn, "BUY")
-            val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
-            val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
+            val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
+            val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
 
             scrapAdapter.addItem(sectors1)
             scrapAdapter.addItem(sectors4)
@@ -102,7 +102,7 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
         binding.sortNrBtn.setOnClickListener {
             scrapAdapter.clear()
             sortClick(binding.sortBtn, binding.sortNrBtn, binding.sortBuyBtn, binding.sortHoldBtn, "NR")
-            val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
+            val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
 
             scrapAdapter.addItem(sectors2)
             scrapAdapter.notifyDataSetChanged()
@@ -111,7 +111,7 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
         binding.sortHoldBtn.setOnClickListener {
             scrapAdapter.clear()
             sortClick(binding.sortBtn, binding.sortHoldBtn, binding.sortNrBtn, binding.sortBuyBtn, "HOLD")
-            val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
+            val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
 
             scrapAdapter.addItem(sectors3)
             scrapAdapter.notifyDataSetChanged()

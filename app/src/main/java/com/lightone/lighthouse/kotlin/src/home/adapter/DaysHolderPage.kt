@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
+import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.util.ItemDecoration
 import com.lightone.lighthouse.kotlin.util.ScrapTouchCallback
@@ -15,7 +16,7 @@ import com.lightone.lighthouse.kotlin.util.ScrapTouchCallback
 
 class DaysHolderPage internal constructor(
     itemView: View,
-    val mItemClickListener: DaysAdapter.OnItemClickEventListener?,
+    val mItemClickListener: DaysAdapter.OnItemClickEventListener?
     ) : RecyclerView.ViewHolder(itemView) {
     private val days_txt : TextView
     private val sector_recycler: RecyclerView
@@ -32,6 +33,8 @@ class DaysHolderPage internal constructor(
 
         sectorAdapter.moveItemClickListener(object : SectorAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
+                val editor = MyApplication.editor.putString("Idx", sectorAdapter.getItem(a_position).idx)
+                editor.commit()
                 mItemClickListener!!.onItemClick(a_view, a_position)
             }
         })

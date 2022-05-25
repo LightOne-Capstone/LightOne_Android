@@ -1,5 +1,6 @@
 package com.lightone.lighthouse.kotlin.src.home
 
+import android.util.Log
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -9,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
+import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.databinding.FragmentHomeBinding
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
+import com.lightone.lighthouse.kotlin.src.search.SearchFragmentDirections
 import com.lightone.lighthouse.kotlin.util.ScrapTouchCallback
 import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
 import org.koin.android.ext.android.inject
@@ -42,10 +45,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     }
 
     override fun initDataBinding() {
-        val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
-        val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
-        val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-        val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
+        val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
+        val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
+        val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
+        val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
 
         var sectorList = ArrayList<Sectors>()
         sectorList.add(sectors1)
@@ -64,7 +67,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         // move detail
         daysAdapter.moveItemClickListener(object : DaysAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                navController.navigate(R.id.action_homeFragment_to_detailFragment)
+                Log.d("home_click", a_position.toString())
+                val args = MyApplication.sSharedPreferences.getString("Idx", null)
+                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(args!!)
+                navController.navigate(action)
+
             }
         })
 

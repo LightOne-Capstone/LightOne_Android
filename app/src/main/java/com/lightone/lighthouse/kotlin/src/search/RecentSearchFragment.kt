@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
 import com.lightone.lighthouse.kotlin.databinding.FragmentRecentSearchBinding
+import com.lightone.lighthouse.kotlin.src.detail.DetailFragmentArgs
 import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
 import com.lightone.lighthouse.kotlin.src.search.model.Search
+import com.lightone.lighthouse.kotlin.src.suggest_detail.SuggestDetailFragmentDirections
 import com.lightone.lighthouse.kotlin.viewmodel.SearchViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -85,7 +87,11 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, SearchVie
         recentAdapter.nextItemClickListener(object : RecentsAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
                 val request = recentAdapter.getItem(a_position)
-                navController.navigate(R.id.action_searchFragment_to_detailFragment)
+//                navController.navigate(R.id.action_searchFragment_to_detailFragment)
+
+                val args = request.id
+                val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(args)
+                navController.navigate(action)
             }
         })
     }

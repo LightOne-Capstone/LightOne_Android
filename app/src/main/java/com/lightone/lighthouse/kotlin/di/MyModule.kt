@@ -6,6 +6,9 @@ import com.lightone.lighthouse.kotlin.Database.UserScrapDatabase
 import com.lightone.lighthouse.kotlin.Database.UserSearchDatabase
 import com.lightone.lighthouse.kotlin.config.MyApplication.Companion.client
 import com.lightone.lighthouse.kotlin.config.MyConstant.Companion.BASE_URL
+import com.lightone.lighthouse.kotlin.src.detail.model.GetChartDataModel
+import com.lightone.lighthouse.kotlin.src.detail.service.GetDetailChartAPI
+import com.lightone.lighthouse.kotlin.src.detail.service.GetDetailChartDataImpl
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
@@ -35,6 +38,15 @@ var retrofitPart = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(SearchAPI::class.java)
+    }
+    single<GetDetailChartAPI> {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(GetDetailChartAPI::class.java)
     }
 }
 
@@ -90,13 +102,16 @@ var modelPart = module {
     factory<SearchDataModel> {
         SearchDataImpl(get())
     }
+    factory<GetChartDataModel> {
+        GetDetailChartDataImpl(get())
+    }
 }
 
 var viewModelPart = module {
     viewModel { MainViewModel() }
     viewModel { HomeViewModel() }
     viewModel { SearchViewModel(get(), get()) }
-    viewModel { DetailViewModel() }
+    viewModel { DetailViewModel(get()) }
     viewModel { SuggestViewModel() }
     viewModel { SuggestDetailViewModel() }
     viewModel { ScraplViewModel() }

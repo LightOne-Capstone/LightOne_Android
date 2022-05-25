@@ -2,8 +2,10 @@ package com.lightone.lighthouse.kotlin.src.detail
 
 import android.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -13,7 +15,6 @@ import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
 import com.lightone.lighthouse.kotlin.databinding.FragmentDetailBinding
 import com.lightone.lighthouse.kotlin.viewmodel.DetailViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -31,40 +32,47 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
 
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
+        val args: DetailFragmentArgs by navArgs()
+        val request = args.idx
+        viewModel.detailChart(request)
     }
 
     override fun initDataBinding() {
 
-        chart = binding.detailChart
+        viewModel.detailchartResponse.observe(viewLifecycleOwner, Observer {
+            chart = binding.detailChart
+            val value: ArrayList<Entry> = ArrayList()
 
-        val values: ArrayList<Entry> = ArrayList()
+            for(i in 0..100){
+                value.add(Entry(i.toFloat(), (it.prices[i].terminalPrice/100).toFloat()))
+            }
 
-        for (i in 0..30) {
-            val value = (Math.random()).toFloat()
-            values.add(Entry(i.toFloat(), value))
-        }
+            val set = LineDataSet(value, "평균가격")
 
-        val set1 = LineDataSet(values, null)
+            // add the data sets
+            val dataSets: ArrayList<ILineDataSet> = ArrayList()
+            dataSets.add(set)
 
-        val dataSets: ArrayList<ILineDataSet> = ArrayList()
-        dataSets.add(set1) // add the data sets
-        // line color
-        set1.color = Color.parseColor("#0DB7B7")
-        set1.lineWidth = 2f
-        // 꼭지점
-        set1.setCircleColor(Color.parseColor("#4D0DB7B7"))
-        // chart 하단
-        set1.valueTextSize = 0f
-        set1.setDrawFilled(true) //그래프 밑부분 색칠
-        set1.setDrawCircles(false) // 그래프 둥글게
+            // line color
+            set.color = Color.parseColor("#0DB7B7")
+            set.lineWidth = 2f
 
-        set1.fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_color)
+            // 꼭지점
+            set.setCircleColor(Color.parseColor("#4D0DB7B7"))
 
-        // create a data object with the data sets
-        val data = LineData(dataSets)
+            // chart 하단
+            set.valueTextSize = 0f
+            set.setDrawFilled(true) //그래프 밑부분 색칠
+            set.setDrawCircles(false) // 그래프 둥글게
 
-        // set data
-        chart.data = data
+            set.fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_color)
+
+            // create a data object with the data sets
+            val data = LineData(dataSets)
+
+            // set data
+            chart.data = data
+        })
     }
 
     override fun initAfterBinding() {

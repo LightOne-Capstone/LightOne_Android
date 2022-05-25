@@ -46,7 +46,11 @@
         android:id="@+id/detailFragment"
         android:name="com.lightone.lighthouse.kotlin.src.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="idx"
+            app:argType="string"/>
+    </fragment>
 
     <fragment
         android:id="@+id/suggestDetailFragment"

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Days
+import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 
 class DaysAdapter() :
     RecyclerView.Adapter<DaysHolderPage>(){
@@ -41,6 +42,7 @@ class DaysAdapter() :
     override fun getItemCount(): Int {
         return itemList.size
     }
+
 
     fun addItem(item: Days) {
         itemList.add(item)

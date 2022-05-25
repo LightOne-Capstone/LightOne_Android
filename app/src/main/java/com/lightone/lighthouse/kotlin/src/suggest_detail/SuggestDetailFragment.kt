@@ -44,10 +44,10 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
     }
 
     override fun initDataBinding() {
-        val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
-        val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
-        val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-        val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
+        val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
+        val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
+        val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
+        val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
 
         suggestsectorAdapter.addItem(sectors1)
         suggestsectorAdapter.addItem(sectors2)
@@ -74,10 +74,10 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
             sortClear(binding.sortBtn, binding.sortBuyBtn, binding.sortHoldBtn, binding.sortNrBtn)
 
             suggestsectorAdapter.clear()
-            val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
-            val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
-            val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-            val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
+            val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
+            val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
+            val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
+            val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
 
             suggestsectorAdapter.addItem(sectors1)
             suggestsectorAdapter.addItem(sectors2)
@@ -90,8 +90,8 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
             binding.sortBtn.setImageResource(R.drawable.ic_sort_click)
             suggestsectorAdapter.clear()
             sortClick(binding.sortBtn, binding.sortBuyBtn, binding.sortNrBtn, binding.sortHoldBtn, "BUY")
-            val sectors1 = Sectors("카카오", 95000, 129000, "BUY", "유진투자증권")
-            val sectors4 = Sectors("요기요", 95000, 200000, "BUY", "유진투자증권")
+            val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
+            val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
 
             suggestsectorAdapter.addItem(sectors1)
             suggestsectorAdapter.addItem(sectors4)
@@ -101,7 +101,7 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         binding.sortNrBtn.setOnClickListener {
             suggestsectorAdapter.clear()
             sortClick(binding.sortBtn, binding.sortNrBtn, binding.sortBuyBtn, binding.sortHoldBtn, "NR")
-            val sectors2 = Sectors("위메프", 95000, 100000, "NR", "유진투자증권")
+            val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
 
             suggestsectorAdapter.addItem(sectors2)
             suggestsectorAdapter.notifyDataSetChanged()
@@ -110,7 +110,7 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         binding.sortHoldBtn.setOnClickListener {
             suggestsectorAdapter.clear()
             sortClick(binding.sortBtn, binding.sortHoldBtn, binding.sortNrBtn, binding.sortBuyBtn, "HOLD")
-            val sectors3 = Sectors("배달의민족", 95000, 129000, "HOLD", "유진투자증권")
+            val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
 
             suggestsectorAdapter.addItem(sectors3)
             suggestsectorAdapter.notifyDataSetChanged()
