@@ -93,5 +93,10 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel>(layoutId: In
             mLoadingDialog.dismiss()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding
+    }
 }
 

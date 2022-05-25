@@ -1,6 +1,7 @@
 package com.lightone.lighthouse.kotlin.src
 
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -9,6 +10,7 @@ import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseActivity
 import com.lightone.lighthouse.kotlin.databinding.ActivityNavhostBinding
 import com.lightone.lighthouse.kotlin.viewmodel.MainViewModel
+import com.lightone.lighthouse.kotlin.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NavHostActivity : BaseActivity<ActivityNavhostBinding, MainViewModel>() {

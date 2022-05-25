@@ -8,7 +8,7 @@ import com.lightone.lighthouse.kotlin.src.search.TagSearchFragment
 
 class SearchViewpagerFragmentAdapter(searchFragment: SearchFragment): FragmentStateAdapter(searchFragment) {
 
-    var fragmentList = mutableListOf<Fragment>(RecentSearchFragment(null), TagSearchFragment())
+    var fragmentList = mutableListOf<Fragment>(RecentSearchFragment(), TagSearchFragment())
 
     override fun getItemCount(): Int {
         return fragmentList.size

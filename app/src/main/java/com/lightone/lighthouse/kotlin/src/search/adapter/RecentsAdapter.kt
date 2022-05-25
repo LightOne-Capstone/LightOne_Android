@@ -60,7 +60,6 @@ class RecentsAdapter() :
 
     fun deleteItem(position: Int) {
         itemList.removeAt(position)
-        this.notifyDataSetChanged()
     }
 
     fun clear() {

@@ -95,8 +95,7 @@ var modelPart = module {
 var viewModelPart = module {
     viewModel { MainViewModel() }
     viewModel { HomeViewModel() }
-    viewModel { SearchViewModel(get()) }
-    viewModel { RecentSearchViewModel(get(), get()) }
+    viewModel { SearchViewModel(get(), get()) }
     viewModel { DetailViewModel() }
     viewModel { SuggestViewModel() }
     viewModel { SuggestDetailViewModel() }
