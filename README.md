@@ -13,3 +13,4 @@ Kotlin ver# LightOne_Android
 5. 2022.05.03(TUE) -> Detail Fragment (Chart use Dummy data)
 6. 2022.05.06(THU) -> Suggest, Suggest Detail Fragment
 7. 2022.05.22(SUN) -> Splash, Swipe, RoomDB
+8. 2022.05.25(WEN) -> Search Logic, Detail Chart
