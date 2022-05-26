@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -107,7 +108,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
             var word = detail.pdfURL.split("/")
             Log.d("glide_response", BASE_URL+"/"+word.last()+".png")
             Glide.with(this)
-                .load(BASE_URL+"/"+word.last()+".png")
+                .load(BASE_URL+"/wordcloud/"+word.last()+".png")
+                .fitCenter()
                 .into(binding.wordImg)
         })
     }
