@@ -2,11 +2,14 @@ package com.lightone.lighthouse.kotlin.src.home
 
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
@@ -15,10 +18,12 @@ import com.lightone.lighthouse.kotlin.databinding.FragmentHomeBinding
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Days
+import com.lightone.lighthouse.kotlin.src.home.model.Reports
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 import com.lightone.lighthouse.kotlin.src.search.SearchFragmentDirections
 import com.lightone.lighthouse.kotlin.util.ScrapTouchCallback
 import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
+import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
@@ -31,6 +36,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     private val sectorAdapter : SectorAdapter by inject()
 
     lateinit var navController: NavController
+    val itemList = ArrayList<Reports>()
 
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
@@ -42,36 +48,69 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
             setHasFixedSize(true)
         }
+        viewModel.getReportList()
+        showLoadingDialog(requireContext())
     }
 
     override fun initDataBinding() {
-        val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
-        val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
-        val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-        val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
+        viewModel.reportdResponse.observe(this, Observer {
+            daysAdapter.clear()
+            itemList.clear()
+            var dateCheck = it[0].date
+            var dayCount = 1
 
-        var sectorList = ArrayList<Sectors>()
-        sectorList.add(sectors1)
-        sectorList.add(sectors2)
-        sectorList.add(sectors3)
-        sectorList.add(sectors4)
+            for(i in it.indices){
+                if(dayCount > 7){
+                    break
+                }
+                val item = it[i]
+                itemList.add(item)
+                if(item.date != dateCheck){
+                    val request = Days(dateCheck, itemList)
+                    dateCheck = item.date
+                    daysAdapter.addItem(request)
+                    dayCount+=1
+                }
+            }
+            daysAdapter.notifyDataSetChanged()
 
-        for(i in 0..6){
-            val days = Days("2022.09.01 MON", sectorList)
-            daysAdapter.addItem(days)
-        }
-        daysAdapter.notifyDataSetChanged()
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(50)
+                dismissLoadingDialog()
+            }
+        })
     }
 
     override fun initAfterBinding() {
         // move detail
         daysAdapter.moveItemClickListener(object : DaysAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                Log.d("home_click", a_position.toString())
                 val args = MyApplication.sSharedPreferences.getString("Idx", null)
+                Log.d("click_log", args.toString())
                 val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(args!!)
                 navController.navigate(action)
+            }
+        })
 
+        // scrap
+        daysAdapter.scrapItemClickListener(object : DaysAdapter.OnItemClickEventListener {
+            override fun onItemClick(a_view: View?, a_position: Int) {
+                val sceapIdx = MyApplication.sSharedPreferences.getString("scrapIdx", null)
+                var request: Reports? = null
+                for(i in 0 until itemList.size){
+                    if(itemList[i].company_id == sceapIdx){request = itemList[i]}
+                }
+
+                val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
+                    request.targetPrice, request.writerCompany, request.writer)
+                viewModel.insertSearch(insert)
+                showLoadingDialog(requireContext())
+
+                viewModel.scrapResponse.observe(this@HomeFragment, Observer {
+                    if(it){
+                        dismissLoadingDialog()
+                    }
+                })
             }
         })
 

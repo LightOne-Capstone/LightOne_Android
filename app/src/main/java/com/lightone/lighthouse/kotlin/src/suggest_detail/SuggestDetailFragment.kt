@@ -54,7 +54,6 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         suggestsectorAdapter.addItem(sectors3)
         suggestsectorAdapter.addItem(sectors4)
         suggestsectorAdapter.notifyDataSetChanged()
-
     }
 
     override fun initAfterBinding() {

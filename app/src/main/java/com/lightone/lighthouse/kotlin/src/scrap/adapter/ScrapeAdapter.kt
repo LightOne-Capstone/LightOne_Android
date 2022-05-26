@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorHolderPage
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
@@ -14,9 +15,9 @@ import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorHo
 
 class ScrapeAdapter() :
     RecyclerView.Adapter<ScrapHolderPage>(){
-    var datas = ArrayList<Sectors>()
+    var datas = ArrayList<UserScrap>()
 
-    private val itemList = ArrayList<Sectors>()
+    private val itemList = ArrayList<UserScrap>()
 
 
     interface OnItemClickEventListener {
@@ -48,11 +49,11 @@ class ScrapeAdapter() :
         return itemList.size
     }
 
-    fun addItem(item: Sectors) {
+    fun addItem(item: UserScrap) {
         itemList.add(item)
     }
 
-    fun getItem(position: Int): Sectors {
+    fun getItem(position: Int): UserScrap {
         return itemList[position]
     }
 

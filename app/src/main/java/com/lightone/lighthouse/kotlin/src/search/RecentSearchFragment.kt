@@ -49,6 +49,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, SearchVie
         viewModel.searchWord.observe(viewLifecycleOwner, Observer {
             if(it == ""){
                 viewModel.getRecentList().observe(this, Observer { item ->
+                    binding.recentTxt.visibility = View.VISIBLE
                     recentAdapter.clear()
                     item.forEach { items ->
                         val new = Search(items.idx.toString(), items.contents, "최근 검색", false)
@@ -61,6 +62,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, SearchVie
 
         viewModel.searchResponse.observe(viewLifecycleOwner, Observer {
             recentAdapter.clear()
+            binding.recentTxt.visibility = View.GONE
             it.forEach { item ->
                 item.check = true
                 recentAdapter.addItem(item)

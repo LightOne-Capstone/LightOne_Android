@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class Days(
     @SerializedName("days") val days: String,
-    @SerializedName("sectors") val sectors: List<Sectors>
+    val sectors: List<Reports>
     )

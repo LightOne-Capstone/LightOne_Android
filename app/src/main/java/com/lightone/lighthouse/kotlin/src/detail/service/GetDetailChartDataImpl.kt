@@ -8,7 +8,7 @@ import com.lightone.lighthouse.kotlin.src.search.model.SearchDataModel
 import io.reactivex.Single
 
 class GetDetailChartDataImpl(private val service: GetDetailChartAPI) : GetChartDataModel {
-    override fun getData(Idx: String): Single<GetDetailChartResponse> {
-        return service.getSearch(Idx)
+    override fun getData(companyId: String): Single<GetDetailChartResponse> {
+        return service.getSearch(companyId)
     }
 }

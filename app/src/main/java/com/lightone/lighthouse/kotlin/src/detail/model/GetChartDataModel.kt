@@ -4,6 +4,6 @@ import com.lightone.lighthouse.kotlin.src.search.model.Search
 import io.reactivex.Single
 
 interface GetChartDataModel {
-    fun getData(searchWord: String): Single<GetDetailChartResponse>
+    fun getData(companyId: String): Single<GetDetailChartResponse>
 }
 

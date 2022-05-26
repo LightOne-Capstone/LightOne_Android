@@ -1,20 +1,18 @@
 package com.lightone.lighthouse.kotlin.src.home.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
-import com.lightone.lighthouse.kotlin.src.home.model.Sectors
+import com.lightone.lighthouse.kotlin.src.home.model.Reports
 
 class SectorAdapter() :
     RecyclerView.Adapter<SectorHolderPage>(){
-    var datas = ArrayList<Sectors>()
+    var datas = ArrayList<Reports>()
 
-    private val itemList = ArrayList<Sectors>()
+    private val itemList = ArrayList<Reports>()
 
 
     interface OnItemClickEventListener {
@@ -27,12 +25,18 @@ class SectorAdapter() :
         mItemClickListener = a_listener
     }
 
+    private var scrapItemClickListener: OnItemClickEventListener? = null
+
+    fun scrapItemClickListener(a_listener: OnItemClickEventListener) {
+        scrapItemClickListener = a_listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectorHolderPage {
         val context: Context = parent.context
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.sectors_item, parent, false)
 
-        return SectorHolderPage(view, mItemClickListener)
+        return SectorHolderPage(view, mItemClickListener, scrapItemClickListener)
     }
 
     override fun onBindViewHolder(holder: SectorHolderPage, position: Int) {
@@ -46,11 +50,11 @@ class SectorAdapter() :
         return itemList.size
     }
 
-    fun addItem(item: Sectors) {
+    fun addItem(item: Reports) {
         itemList.add(item)
     }
 
-    fun getItem(position: Int): Sectors {
+    fun getItem(position: Int): Reports {
         return itemList[position]
     }
 

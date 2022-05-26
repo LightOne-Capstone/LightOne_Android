@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Days
-import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 
 class DaysAdapter() :
     RecyclerView.Adapter<DaysHolderPage>(){
@@ -25,11 +24,17 @@ class DaysAdapter() :
         mItemClickListener = a_listener
     }
 
+    private var scrapItemClickListener: OnItemClickEventListener? = null
+
+    fun scrapItemClickListener(a_listener: OnItemClickEventListener) {
+        scrapItemClickListener = a_listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysHolderPage {
         val context: Context = parent.context
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.days_item, parent, false)
-        return DaysHolderPage(view, mItemClickListener)
+        return DaysHolderPage(view, mItemClickListener, scrapItemClickListener)
     }
 
     override fun onBindViewHolder(holder: DaysHolderPage, position: Int) {

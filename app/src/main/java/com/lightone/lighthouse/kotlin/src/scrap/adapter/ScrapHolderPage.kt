@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 import com.lightone.lighthouse.kotlin.util.priceFormatter
@@ -21,27 +22,25 @@ class ScrapHolderPage internal constructor(
     private val sector_main: ConstraintLayout
 
 
-    var data: Sectors? = null
-    fun onBind(data: Sectors) {
+    var data: UserScrap? = null
+    fun onBind(data: UserScrap) {
         this.data = data
 
-        company_txt.text = data.companyName+" "+priceFormatter(data.nowPrice)+"원"
+        company_txt.text = data.company_name+" "+priceFormatter(data.currentPrice)+"원"
 
-        if(data.status == "BUY"){
-            status_txt.text = data.status
+        status_txt.text = data.suggestion
+        if(data.suggestion == "BUY"){
             status_txt.setBackgroundResource(R.drawable.buy_custom)
         }
-        else if(data.status =="NR"){
-            status_txt.text = data.status
+        else if(data.suggestion =="NR"){
             status_txt.setBackgroundResource(R.drawable.nr_custom)
         }
         else{
-            status_txt.text = data.status
             status_txt.setBackgroundResource(R.drawable.hold_custom)
         }
 
-        targetprice_txt.text = priceFormatter(data.taegetPrice) +"원"
-        stockcompany_txt.text = data.stockCompany
+        targetprice_txt.text = "목표가 "+priceFormatter(data.targetPrice) +"원"
+        stockcompany_txt.text = data.writerCompany
 
         sector_main.setOnClickListener(View.OnClickListener { a_view ->
             val position = absoluteAdapterPosition

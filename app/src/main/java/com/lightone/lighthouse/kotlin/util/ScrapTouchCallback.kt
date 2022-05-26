@@ -2,12 +2,9 @@ package com.lightone.lighthouse.kotlin.util
 
 import android.graphics.Canvas
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
-import com.lightone.lighthouse.kotlin.R
-import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorHolderPage
 import kotlinx.android.synthetic.main.sectors_item.view.*
 import kotlin.math.max
@@ -22,7 +19,7 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
+        viewHolder: RecyclerView.ViewHolder,
     ): Int {
         return makeMovementFlags(0, LEFT or RIGHT)
     }
@@ -30,7 +27,7 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        target: RecyclerView.ViewHolder,
     ): Boolean {
         return false
     }
@@ -69,7 +66,7 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
         dX: Float,
         dY: Float,
         actionState: Int,
-        isCurrentlyActive: Boolean
+        isCurrentlyActive: Boolean,
     ) {
         if (actionState == ACTION_STATE_SWIPE) {
             val view = getView(viewHolder)
@@ -94,7 +91,7 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
         view: View,
         dX: Float,
         isClamped: Boolean,
-        isCurrentlyActive: Boolean
+        isCurrentlyActive: Boolean,
     ) : Float {
         // View의 가로 길이의 절반까지만 swipe 되도록
         val min: Float = -view.width.toFloat()/2
@@ -139,5 +136,4 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
             previousPosition = null
         }
     }
-
 }

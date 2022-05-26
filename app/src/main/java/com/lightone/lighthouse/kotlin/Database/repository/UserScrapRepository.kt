@@ -10,8 +10,8 @@ class UserScrapRepository(val dao: UserScrapRepository) {
         dao.insert(userScrap)
     }
 
-    fun deleteScrap(id: Int){
-        dao.deleteScrap(id)
+    fun deleteScrap(idx: Int){
+        dao.deleteScrap(idx)
     }
 
     fun getAll(): LiveData<List<UserScrap>> {

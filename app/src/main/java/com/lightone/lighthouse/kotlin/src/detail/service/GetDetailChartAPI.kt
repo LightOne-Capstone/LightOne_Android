@@ -7,5 +7,5 @@ import retrofit2.http.*
 
 interface GetDetailChartAPI {
     @GET("/company/id/{idx}")
-    fun getSearch(@Path("idx") idx: String) : Single<GetDetailChartResponse>
+    fun getSearch(@Path("idx") companyId: String) : Single<GetDetailChartResponse>
 }

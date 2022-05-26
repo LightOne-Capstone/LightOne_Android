@@ -16,6 +16,6 @@ interface UserScrapDao {
     @Query("DELETE from userscrap")
     fun deleteAll()
 
-    @Query("DELETE FROM userscrap WHERE id = :id")
-    fun deleteScrap(id: Int)
+    @Query("DELETE FROM userscrap WHERE idx = :idx")
+    fun deleteScrap(idx: Int)
 }

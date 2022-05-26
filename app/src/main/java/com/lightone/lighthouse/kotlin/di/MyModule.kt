@@ -11,6 +11,9 @@ import com.lightone.lighthouse.kotlin.src.detail.service.GetDetailChartAPI
 import com.lightone.lighthouse.kotlin.src.detail.service.GetDetailChartDataImpl
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
+import com.lightone.lighthouse.kotlin.src.home.model.GetReportsDataModel
+import com.lightone.lighthouse.kotlin.src.home.service.ReportAPI
+import com.lightone.lighthouse.kotlin.src.home.service.ReportDataImpl
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
 import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
 import com.lightone.lighthouse.kotlin.src.search.model.SearchDataModel
@@ -47,6 +50,15 @@ var retrofitPart = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GetDetailChartAPI::class.java)
+    }
+    single<ReportAPI> {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ReportAPI::class.java)
     }
 }
 
@@ -105,16 +117,19 @@ var modelPart = module {
     factory<GetChartDataModel> {
         GetDetailChartDataImpl(get())
     }
+    factory<GetReportsDataModel> {
+        ReportDataImpl(get())
+    }
 }
 
 var viewModelPart = module {
     viewModel { MainViewModel() }
-    viewModel { HomeViewModel() }
+    viewModel { HomeViewModel(get(), get()) }
     viewModel { SearchViewModel(get(), get()) }
     viewModel { DetailViewModel(get()) }
     viewModel { SuggestViewModel() }
     viewModel { SuggestDetailViewModel() }
-    viewModel { ScraplViewModel() }
+    viewModel { ScraplViewModel(get()) }
 }
 
 var myDiModule = listOf(retrofitPart, roomPart, adapterPart, modelPart, viewModelPart)

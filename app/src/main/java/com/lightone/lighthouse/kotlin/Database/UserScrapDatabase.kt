@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.lightone.lighthouse.kotlin.Database.dao.UserScrapDao
 import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 
-@Database(entities = [UserScrap::class], version = 1)
+@Database(entities = [UserScrap::class], version = 2)
 abstract class UserScrapDatabase: RoomDatabase() {
     abstract fun userscrapDao(): UserScrapDao
 

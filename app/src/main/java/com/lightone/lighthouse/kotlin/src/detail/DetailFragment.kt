@@ -1,11 +1,15 @@
 package com.lightone.lighthouse.kotlin.src.detail
 
 import android.graphics.Color
+import android.text.util.Linkify
+import android.util.Log
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -13,9 +17,13 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
+import com.lightone.lighthouse.kotlin.config.MyApplication
+import com.lightone.lighthouse.kotlin.config.MyConstant.Companion.BASE_URL
 import com.lightone.lighthouse.kotlin.databinding.FragmentDetailBinding
+import com.lightone.lighthouse.kotlin.util.priceFormatter
 import com.lightone.lighthouse.kotlin.viewmodel.DetailViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.regex.Pattern
 
 
 class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.layout.fragment_detail) {
@@ -40,6 +48,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
     override fun initDataBinding() {
 
         viewModel.detailchartResponse.observe(viewLifecycleOwner, Observer {
+            // 차트 관련
             chart = binding.detailChart
             val value: ArrayList<Entry> = ArrayList()
 
@@ -72,6 +81,34 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
 
             // set data
             chart.data = data
+
+
+            // 보고서 내용 관련
+            val detail = it.reports[0]
+            binding.companyTxt.text = detail.company_name
+            binding.serialTxt.text = detail.company_id
+            binding.daysTxt.text = detail.date+"기준"
+            binding.priceTxt.text = priceFormatter(detail.currentPrice) +"원"
+            suggestBackground(detail.suggestion)
+            binding.reportContent.text = detail.summery
+            binding.reportDetailContent.text = detail.keyword
+            binding.reportName.text = detail.writerCompany+" "+detail.writer
+            binding.targetPrice.text = "목표주가 "+priceFormatter(detail.targetPrice)+"원"
+
+            binding.reportPdfUrl.text = detail.pdfURL
+            val text = detail.pdfURL
+            val tvLinkify: TextView = binding.reportPdfUrl
+            tvLinkify.text = text
+            val mTransform =
+                Linkify.TransformFilter { match, url -> "" }
+            val pattern1: Pattern = Pattern.compile(text)
+            Linkify.addLinks(tvLinkify, pattern1, text, null, mTransform)
+
+            var word = detail.pdfURL.split("/")
+            Log.d("glide_response", BASE_URL+"/"+word.last()+".png")
+            Glide.with(this)
+                .load(BASE_URL+"/"+word.last()+".png")
+                .into(binding.wordImg)
         })
     }
 
@@ -80,8 +117,21 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
             navController.popBackStack()
         }
 
-//        binding.scrapBtn.setOnClickListener {
-//            navController.navigate(R.id)
-//        }
+        binding.scrapBtn.setOnClickListener {
+            navController.navigate(R.id.action_detailFragment_to_scrapFragment)
+        }
+    }
+
+    fun suggestBackground(data: String) {
+        binding.statusTxt.text = data
+        if(data == "BUY"){
+            binding.statusTxt.setBackgroundResource(R.drawable.buy_custom)
+        }
+        else if(data =="NR"){
+            binding.statusTxt.setBackgroundResource(R.drawable.nr_custom)
+        }
+        else{
+            binding.statusTxt.setBackgroundResource(R.drawable.hold_custom)
+        }
     }
 }
