@@ -15,3 +15,4 @@ Kotlin ver# LightOne_Android
 7. 2022.05.22(SUN) -> Splash, Swipe, RoomDB
 8. 2022.05.25(WEN) -> Search Logic, Detail Chart
 9. 2022.05.26(THU) -> Home Api, Detail Api, Scrap Logic Complete
+10. 2022.05.27(FRI) -> Add Scrap, Delete Scrap Logic
