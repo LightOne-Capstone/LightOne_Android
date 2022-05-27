@@ -22,7 +22,8 @@ import androidx.navigation.Navigation.findNavController
 
 abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel>(layoutId: Int) : Fragment(layoutId) {
 
-    lateinit var binding: T
+    private var _binding: T? = null
+    val binding get() = _binding!!
 
     /**
      * setContentView로 호출할 Layout의 리소스 Id.
@@ -65,7 +66,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel>(layoutId: In
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         return binding.root
     }
 
@@ -96,7 +97,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel>(layoutId: In
 
     override fun onDestroy() {
         super.onDestroy()
-        binding
+        _binding = null
     }
 }
 
