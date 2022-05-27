@@ -8,24 +8,16 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
-import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.databinding.FragmentScrapBinding
-import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestBinding
-import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestDetailBinding
-import com.lightone.lighthouse.kotlin.src.home.HomeFragmentDirections
-import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
-import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
-import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
-import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
-import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
+import com.lightone.lighthouse.kotlin.util.DeleteScrapTouchCallback
 import com.lightone.lighthouse.kotlin.viewmodel.ScraplViewModel
-import com.lightone.lighthouse.kotlin.viewmodel.SuggestDetailViewModel
-import com.lightone.lighthouse.kotlin.viewmodel.SuggestViewModel
+import kotlinx.android.synthetic.main.days_item.*
 import org.koin.android.ext.android.inject
 
 class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layout.fragment_scrap) {
@@ -38,13 +30,24 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
 
     lateinit var navController: NavController
 
+    val swipeHelperCallback = DeleteScrapTouchCallback().apply {
+        setClamp(200f)
+    }
+
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
 
-        binding.suggestRecycler.run {
+        val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.scrapRecycler)
+
+        binding.scrapRecycler.run {
             adapter = scrapAdapter
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
+            }
+            setOnTouchListener { _, _ ->
+                swipeHelperCallback.removePreviousClamp(this)
+                false
             }
             setHasFixedSize(true)
         }
@@ -59,6 +62,10 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             }
             scrapAdapter.notifyDataSetChanged()
         })
+
+        viewModel.deleteResponse.observe(this, Observer {
+            dismissLoadingDialog()
+        })
     }
 
     override fun initAfterBinding() {
@@ -71,6 +78,15 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
                 val action = ScrapFragmentDirections.actionScrapFragmentToDetailFragment(args!!)
                 navController.navigateUp()
                 navController.navigate(action)
+            }
+        })
+
+        // delete btn
+        scrapAdapter.deleteItemClickListener(object : ScrapeAdapter.OnItemClickEventListener {
+            override fun onItemClick(a_view: View?, a_position: Int) {
+                val idx = scrapAdapter.getItem(a_position).idx
+                showLoadingDialog(requireContext())
+                viewModel.deleteScrap(idx)
             }
         })
 

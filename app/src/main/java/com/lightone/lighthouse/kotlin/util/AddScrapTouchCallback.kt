@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorHolderPage
+import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapHolderPage
 import kotlinx.android.synthetic.main.sectors_item.view.*
 import kotlin.math.max
 import kotlin.math.min
 
-class ScrapTouchCallback() : ItemTouchHelper.Callback() {
+class AddScrapTouchCallback() : ItemTouchHelper.Callback() {
 
     private var currentPosition: Int? = null
     private var previousPosition: Int? = null
@@ -38,12 +39,12 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         currentDx = 0f
         getDefaultUIUtil().clearView(getView(viewHolder))
-        previousPosition = viewHolder.adapterPosition
+        previousPosition = viewHolder.absoluteAdapterPosition
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         viewHolder?.let {
-            currentPosition = viewHolder.adapterPosition
+            currentPosition = viewHolder.absoluteAdapterPosition
             getDefaultUIUtil().onSelected(getView(it))
         }
     }
@@ -55,7 +56,7 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
     override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
         val isClamped = getTag(viewHolder)
         // 현재 View가 고정되어있지 않고 사용자가 -clamp 이상 swipe시 isClamped true로 변경 아닐시 false로 변경
-        setTag(viewHolder, !isClamped && currentDx <= -clamp)
+        setTag(viewHolder, !isClamped && currentDx <= clamp)
         return 2f
     }
 
@@ -93,16 +94,16 @@ class ScrapTouchCallback() : ItemTouchHelper.Callback() {
         isClamped: Boolean,
         isCurrentlyActive: Boolean,
     ) : Float {
+        // LEFT 방향으로 swipe 막기
+        val min: Float = 0f
         // View의 가로 길이의 절반까지만 swipe 되도록
-        val min: Float = -view.width.toFloat()/2
-        // RIGHT 방향으로 swipe 막기
-        val max: Float = 0f
+        val max: Float = view.width.toFloat()/2
 
         val x = if (isClamped) {
             // View가 고정되었을 때 swipe되는 영역 제한
             if (isCurrentlyActive) dX - clamp else -clamp
         } else {
-            dX
+            dX + clamp
         }
 
         return min(max(min, x), max)

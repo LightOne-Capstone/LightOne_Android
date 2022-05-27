@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.src.home.model.Days
-import com.lightone.lighthouse.kotlin.util.ScrapTouchCallback
+import com.lightone.lighthouse.kotlin.util.AddScrapTouchCallback
+import com.lightone.lighthouse.kotlin.util.DeleteScrapTouchCallback
 
 
 class DaysHolderPage internal constructor(
@@ -39,7 +40,7 @@ class DaysHolderPage internal constructor(
             }
         })
 
-        val swipeHelperCallback = ScrapTouchCallback().apply {
+        val swipeHelperCallback = AddScrapTouchCallback().apply {
             setClamp(200f)
         }
         val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
@@ -53,6 +54,7 @@ class DaysHolderPage internal constructor(
                 swipeHelperCallback.removePreviousClamp(this)
                 false
             }
+            setHasFixedSize(true)
         }
 
         sectorAdapter.scrapItemClickListener(object : SectorAdapter.OnItemClickEventListener {

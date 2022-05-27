@@ -30,12 +30,18 @@ class ScrapeAdapter() :
         mItemClickListener = a_listener
     }
 
+    private var dItemClickListener: OnItemClickEventListener? = null
+
+    fun deleteItemClickListener(a_listener: OnItemClickEventListener) {
+        dItemClickListener = a_listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrapHolderPage {
         val context: Context = parent.context
         val view: View =
-            LayoutInflater.from(context).inflate(R.layout.sectors_item, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.scrap_item, parent, false)
 
-        return ScrapHolderPage(view, mItemClickListener)
+        return ScrapHolderPage(view, mItemClickListener, dItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ScrapHolderPage, position: Int) {

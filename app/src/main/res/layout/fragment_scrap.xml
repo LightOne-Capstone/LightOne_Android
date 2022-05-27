@@ -128,7 +128,7 @@
                 android:paddingBottom="80dp">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/suggest_recycler"
+                    android:id="@+id/scrap_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

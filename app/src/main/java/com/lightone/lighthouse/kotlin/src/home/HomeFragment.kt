@@ -3,12 +3,9 @@ package com.lightone.lighthouse.kotlin.src.home
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
@@ -19,9 +16,7 @@ import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.src.home.model.Reports
-import com.lightone.lighthouse.kotlin.src.home.model.Sectors
-import com.lightone.lighthouse.kotlin.src.search.SearchFragmentDirections
-import com.lightone.lighthouse.kotlin.util.ScrapTouchCallback
+import com.lightone.lighthouse.kotlin.util.DeleteScrapTouchCallback
 import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
@@ -75,7 +70,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             daysAdapter.notifyDataSetChanged()
 
             CoroutineScope(Dispatchers.Main).launch {
-                delay(50)
+                delay(100)
                 dismissLoadingDialog()
             }
         })

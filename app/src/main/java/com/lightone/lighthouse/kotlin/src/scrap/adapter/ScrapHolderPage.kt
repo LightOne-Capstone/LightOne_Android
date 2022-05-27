@@ -13,6 +13,7 @@ import com.lightone.lighthouse.kotlin.util.priceFormatter
 
 class ScrapHolderPage internal constructor(
     itemView: View,
+    var m_itemClickListener: ScrapeAdapter.OnItemClickEventListener?,
     var d_itemClickListener: ScrapeAdapter.OnItemClickEventListener?
     ) : RecyclerView.ViewHolder(itemView) {
     private val company_txt :TextView
@@ -20,6 +21,7 @@ class ScrapHolderPage internal constructor(
     private val targetprice_txt: TextView
     private val stockcompany_txt: TextView
     private val sector_main: ConstraintLayout
+    private val delete_btn: ConstraintLayout
 
 
     var data: UserScrap? = null
@@ -45,6 +47,13 @@ class ScrapHolderPage internal constructor(
         sector_main.setOnClickListener(View.OnClickListener { a_view ->
             val position = absoluteAdapterPosition
             if (position != RecyclerView.NO_POSITION) {
+                m_itemClickListener!!.onItemClick(a_view, position)
+            }
+        })
+
+        delete_btn.setOnClickListener(View.OnClickListener { a_view ->
+            val position = absoluteAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
                 d_itemClickListener!!.onItemClick(a_view, position)
             }
         })
@@ -56,5 +65,6 @@ class ScrapHolderPage internal constructor(
         targetprice_txt = itemView.findViewById(R.id.targetprice_txt)
         stockcompany_txt = itemView.findViewById(R.id.stockcompany_txt)
         sector_main = itemView.findViewById(R.id.sector_main)
+        delete_btn = itemView.findViewById(R.id.delete_btn)
     }
 }
