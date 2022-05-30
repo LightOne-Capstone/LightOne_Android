@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
+import com.lightone.lighthouse.kotlin.util.suggestImg
 
 class SuggestHolderPage internal constructor(
     itemView: View,
@@ -24,15 +25,14 @@ class SuggestHolderPage internal constructor(
     fun onBind(data: Suggests) {
         this.data = data
 
-        suggest_img.setImageResource(data.img)
-        suggest_name.text = data.name
-        if(data.count<10){
-            suggest_count.text = "+ 0"+data.count.toString()+"개"
+        suggest_img.setImageResource(suggestImg(data.category))
+        suggest_name.text = data.category
+        if(data.count.toInt() < 10){
+            suggest_count.text = "+ 0"+data.count+"개"
         }
         else{
-            suggest_count.text = "+ "+data.count.toString()+"개"
+            suggest_count.text = "+ "+data.count+"개"
         }
-
 
         suggest_main.setOnClickListener(View.OnClickListener { a_view ->
             val position = absoluteAdapterPosition

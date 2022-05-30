@@ -5,7 +5,11 @@ import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 
 data class Suggests(
-    @SerializedName("img") val img: Int,
-    @SerializedName("name") val name: String,
-    @SerializedName("count") val count: Int
+    @SerializedName("category") val category: String,
+    @SerializedName("count") val count: String
     )
+
+//{
+//    "category": "개인 서비스",
+//    "count": "1"
+//}

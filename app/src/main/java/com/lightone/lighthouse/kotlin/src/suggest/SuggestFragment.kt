@@ -33,21 +33,18 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
             }
             setHasFixedSize(true)
         }
+
+        viewModel.getSuggest("30")
     }
 
     override fun initDataBinding() {
-        val item1 = Suggests(R.drawable.ic_airplane, "항공사", 0)
-        val item2 = Suggests(R.drawable.ic_medical, "의약품", 7)
-        val item3 = Suggests(R.drawable.ic_automobile, "자동차", 13)
-        val item4 = Suggests(R.drawable.ic_enter, "엔터테이트먼트", 90)
-        val item5 = Suggests(R.drawable.ic_moive, "영화", 30)
-
-        suggestAdapter.addItem(item1)
-        suggestAdapter.addItem(item2)
-        suggestAdapter.addItem(item3)
-        suggestAdapter.addItem(item4)
-        suggestAdapter.addItem(item5)
-        suggestAdapter.notifyDataSetChanged()
+        viewModel.suggestResponse.observe(this){
+            it.forEach { item ->
+                suggestAdapter.addItem(item)
+            }
+            suggestAdapter.notifyDataSetChanged()
+            binding.headTitle.text = it.size.toString()+"개의 증권사 리포트가\n주목하는 종목"
+        }
     }
 
     override fun initAfterBinding() {

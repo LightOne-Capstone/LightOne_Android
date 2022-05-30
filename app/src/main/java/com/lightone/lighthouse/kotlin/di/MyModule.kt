@@ -20,6 +20,9 @@ import com.lightone.lighthouse.kotlin.src.search.model.SearchDataModel
 import com.lightone.lighthouse.kotlin.src.search.service.SearchAPI
 import com.lightone.lighthouse.kotlin.src.search.service.SearchDataImpl
 import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
+import com.lightone.lighthouse.kotlin.src.suggest.model.SuggestDataModel
+import com.lightone.lighthouse.kotlin.src.suggest.service.SuggestAPI
+import com.lightone.lighthouse.kotlin.src.suggest.service.SuggestDataImpl
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
 import com.lightone.lighthouse.kotlin.viewmodel.*
 import org.koin.androidx.viewmodel.ext.koin.viewModel
@@ -59,6 +62,15 @@ var retrofitPart = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ReportAPI::class.java)
+    }
+    single<SuggestAPI> {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SuggestAPI::class.java)
     }
 }
 
@@ -120,6 +132,9 @@ var modelPart = module {
     factory<GetReportsDataModel> {
         ReportDataImpl(get())
     }
+    factory<SuggestDataModel> {
+        SuggestDataImpl(get())
+    }
 }
 
 var viewModelPart = module {
@@ -127,7 +142,7 @@ var viewModelPart = module {
     viewModel { HomeViewModel(get(), get()) }
     viewModel { SearchViewModel(get(), get()) }
     viewModel { DetailViewModel(get()) }
-    viewModel { SuggestViewModel() }
+    viewModel { SuggestViewModel(get() ) }
     viewModel { SuggestDetailViewModel() }
     viewModel { ScraplViewModel(get()) }
 }
