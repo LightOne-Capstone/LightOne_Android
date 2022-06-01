@@ -17,3 +17,4 @@ Kotlin ver# LightOne_Android
 9. 2022.05.26(THU) -> Home Api, Detail Api, Scrap Logic Complete
 10. 2022.05.27(FRI) -> Add Scrap, Delete Scrap Logic
 11. 2022.05.30(MON) -> Suggest Api Comp
+12. 2022.06.01(WEN) -> Suggest Detail Api Comp, Suggest Detail Logic Comp
