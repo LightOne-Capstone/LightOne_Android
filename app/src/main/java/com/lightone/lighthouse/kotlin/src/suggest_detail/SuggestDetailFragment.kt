@@ -43,19 +43,29 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
     override val viewModel: SuggestDetailViewModel by viewModel()
     private val suggestsectorAdapter : SuggestSectorAdapter by inject()
 
+    var suggestion: String? = null
+
     lateinit var navController: NavController
+    lateinit var categoryName: String
+    lateinit var days: String
 
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
+
         val args: SuggestDetailFragmentArgs by navArgs()
-        val categoryName = args.categoryName
-        var days = args.days
+        categoryName = args.categoryName
+        days = args.days
+        Log.d("days_response", days.toString())
+
         if(days == "null"){
             viewModel.suggestDetail(categoryName, null)
+            binding.topTitle.text = "전체기간 동안 발행된 리포트"
         }
         else{
             viewModel.suggestDetail(categoryName, days)
+            binding.topTitle.text = days+"일 동안 발행된 리포트"
         }
+        binding.detailName.text = categoryName
 
         val swipeHelperCallback = AddScrapTouchCallback().apply {
             setClamp(200f)
@@ -74,21 +84,20 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
             }
             setHasFixedSize(true)
         }
-
-        binding.detailName.text = categoryName
-        if(days != "null"){
-            binding.topTitle.text = days+"일 동안 발행된 리포트"
-        }
-        else{
-            binding.topTitle.text = "전체기간 동안 발행된 리포트"
-        }
-
     }
 
     override fun initDataBinding() {
         viewModel.suggestDetailResponse.observe(this) {
+            suggestsectorAdapter.clear()
             it.forEach { item ->
-                suggestsectorAdapter.addItem(item)
+                if(suggestion != null){
+                    if(item.suggestion == suggestion){
+                        suggestsectorAdapter.addItem(item)
+                    }
+                }
+                else{
+                    suggestsectorAdapter.addItem(item)
+                }
             }
             suggestsectorAdapter.notifyDataSetChanged()
             binding.countTxt.text = it.size.toString()+"개"
@@ -130,20 +139,50 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
 
         binding.sortBtn.setOnClickListener {
             sortClear(binding.sortBtn, binding.sortBuyBtn, binding.sortHoldBtn, binding.sortNrBtn)
+            suggestion = null
+            if(days == "null"){
+                viewModel.suggestDetail(categoryName, null)
+            }
+            else{
+                viewModel.suggestDetail(categoryName, days)
+            }
         }
 
         binding.sortBuyBtn.setOnClickListener {
             binding.sortBtn.setImageResource(R.drawable.ic_sort_click)
             suggestsectorAdapter.clear()
+            sortClick(binding.sortBtn, binding.sortBuyBtn, binding.sortNrBtn, binding.sortHoldBtn, "BUY")
+            suggestion = "BUY"
+            if(days == "null"){
+                viewModel.suggestDetail(categoryName, null)
+            }
+            else{
+                viewModel.suggestDetail(categoryName, days)
+            }
         }
 
         binding.sortNrBtn.setOnClickListener {
             suggestsectorAdapter.clear()
+            sortClick(binding.sortBtn, binding.sortNrBtn, binding.sortBuyBtn, binding.sortHoldBtn, "NR")
+            suggestion = "NR"
+            if(days == "null"){
+                viewModel.suggestDetail(categoryName, null)
+            }
+            else{
+                viewModel.suggestDetail(categoryName, days)
+            }
         }
 
         binding.sortHoldBtn.setOnClickListener {
             suggestsectorAdapter.clear()
             sortClick(binding.sortBtn, binding.sortHoldBtn, binding.sortNrBtn, binding.sortBuyBtn, "HOLD")
+            suggestion = "HOLD"
+            if(days == "null"){
+                viewModel.suggestDetail(categoryName, null)
+            }
+            else{
+                viewModel.suggestDetail(categoryName, days)
+            }
         }
     }
 
