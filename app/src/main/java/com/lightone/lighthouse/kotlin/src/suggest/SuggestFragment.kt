@@ -1,13 +1,19 @@
 package com.lightone.lighthouse.kotlin.src.suggest
 
+import android.graphics.Color
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
+import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestBinding
+import com.lightone.lighthouse.kotlin.src.home.HomeFragmentDirections
 import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestViewModel
@@ -23,6 +29,8 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
 
     lateinit var navController: NavController
 
+    var days: String? = null
+
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
 
@@ -33,12 +41,12 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
             }
             setHasFixedSize(true)
         }
-
-        viewModel.getSuggest("30")
+        daySelect(binding.dayBtn, binding.day15Btn, binding.day30Btn, binding.day60Btn)
     }
 
     override fun initDataBinding() {
         viewModel.suggestResponse.observe(this){
+            suggestAdapter.clear()
             it.forEach { item ->
                 suggestAdapter.addItem(item)
             }
@@ -51,8 +59,52 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
         // move detail
         suggestAdapter.moveItemClickListener(object : SuggestAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                navController.navigate(R.id.action_suggestFragment_to_suggestDetailFragment)
+                val categoryName = suggestAdapter.getItem(a_position).category
+                val action = SuggestFragmentDirections.actionSuggestFragmentToSuggestDetailFragment(categoryName!!,
+                    days.toString())
+                navController.navigate(action)
             }
         })
+
+        binding.dayBtn.setOnClickListener {
+            daySelect(binding.dayBtn, binding.day15Btn, binding.day30Btn, binding.day60Btn)
+        }
+        binding.day15Btn.setOnClickListener {
+            daySelect(binding.day15Btn, binding.dayBtn, binding.day60Btn, binding.day30Btn)
+        }
+        binding.day30Btn.setOnClickListener {
+            daySelect(binding.day30Btn, binding.dayBtn, binding.day15Btn, binding.day60Btn)
+        }
+        binding.day60Btn.setOnClickListener {
+            daySelect(binding.day60Btn, binding.dayBtn, binding.day30Btn, binding.day15Btn)
+        }
+    }
+
+    fun daySelect(select: TextView, other1: TextView, other2: TextView, other3: TextView) {
+        select.setBackgroundResource(R.drawable.hold_custom)
+        select.setTextColor(Color.parseColor("#FFFFFF"))
+
+        other1.setTextColor(Color.parseColor("#000000"))
+        other1.setBackgroundResource(R.drawable.sort_btn_custom)
+        other2.setTextColor(Color.parseColor("#000000"))
+        other2.setBackgroundResource(R.drawable.sort_btn_custom)
+        other3.setTextColor(Color.parseColor("#000000"))
+        other3.setBackgroundResource(R.drawable.sort_btn_custom)
+
+        days = when (select.text) {
+            "15일" -> {
+                "15"
+            }
+            "30일" -> {
+                "30"
+            }
+            "60일" -> {
+                "60"
+            }
+            else -> {
+                null
+            }
+        }
+        viewModel.getSuggest(days)
     }
 }

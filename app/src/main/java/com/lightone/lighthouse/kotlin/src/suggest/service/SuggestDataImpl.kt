@@ -8,7 +8,7 @@ import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
 import io.reactivex.Single
 
 class SuggestDataImpl(private val service: SuggestAPI) : SuggestDataModel {
-    override fun getData(days: String): Single<List<Suggests>> {
+    override fun getData(days: String?): Single<List<Suggests>> {
         return service.getSuggest(days)
     }
 }

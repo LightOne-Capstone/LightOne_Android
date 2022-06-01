@@ -24,6 +24,9 @@ import com.lightone.lighthouse.kotlin.src.suggest.model.SuggestDataModel
 import com.lightone.lighthouse.kotlin.src.suggest.service.SuggestAPI
 import com.lightone.lighthouse.kotlin.src.suggest.service.SuggestDataImpl
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
+import com.lightone.lighthouse.kotlin.src.suggest_detail.model.GetSuggestDetailDataModel
+import com.lightone.lighthouse.kotlin.src.suggest_detail.service.GetSuggestDetailAPI
+import com.lightone.lighthouse.kotlin.src.suggest_detail.service.GetSuggestDetailDataImpl
 import com.lightone.lighthouse.kotlin.viewmodel.*
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
@@ -71,6 +74,15 @@ var retrofitPart = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(SuggestAPI::class.java)
+    }
+    single<GetSuggestDetailAPI> {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(GetSuggestDetailAPI::class.java)
     }
 }
 
@@ -135,6 +147,9 @@ var modelPart = module {
     factory<SuggestDataModel> {
         SuggestDataImpl(get())
     }
+    factory<GetSuggestDetailDataModel> {
+        GetSuggestDetailDataImpl(get())
+    }
 }
 
 var viewModelPart = module {
@@ -143,7 +158,7 @@ var viewModelPart = module {
     viewModel { SearchViewModel(get(), get()) }
     viewModel { DetailViewModel(get()) }
     viewModel { SuggestViewModel(get() ) }
-    viewModel { SuggestDetailViewModel() }
+    viewModel { SuggestDetailViewModel(get(), get()) }
     viewModel { ScraplViewModel(get()) }
 }
 

@@ -7,5 +7,5 @@ import retrofit2.http.*
 
 interface SuggestAPI {
     @GET("/report/category")
-    fun getSuggest(@Query("days") days: String) : Single<List<Suggests>>
+    fun getSuggest(@Query("days") days: String?) : Single<List<Suggests>>
 }

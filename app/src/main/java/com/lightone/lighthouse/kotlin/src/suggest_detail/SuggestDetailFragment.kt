@@ -1,24 +1,38 @@
 package com.lightone.lighthouse.kotlin.src.suggest_detail
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
+import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestBinding
 import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestDetailBinding
+import com.lightone.lighthouse.kotlin.src.detail.DetailFragmentArgs
+import com.lightone.lighthouse.kotlin.src.home.HomeFragmentDirections
+import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
+import com.lightone.lighthouse.kotlin.src.home.model.Reports
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
+import com.lightone.lighthouse.kotlin.util.AddScrapTouchCallback
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestDetailViewModel
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestViewModel
+import kotlinx.android.synthetic.main.days_item.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
 class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, SuggestDetailViewModel>(R.layout.fragment_suggest_detail) {
@@ -33,34 +47,79 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
 
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
+        val args: SuggestDetailFragmentArgs by navArgs()
+        val categoryName = args.categoryName
+        var days = args.days
+        if(days == "null"){
+            viewModel.suggestDetail(categoryName, null)
+        }
+        else{
+            viewModel.suggestDetail(categoryName, days)
+        }
 
+        val swipeHelperCallback = AddScrapTouchCallback().apply {
+            setClamp(200f)
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+
+        itemTouchHelper.attachToRecyclerView(binding.suggestRecycler)
         binding.suggestRecycler.run {
             adapter = suggestsectorAdapter
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
+            setOnTouchListener { _, _ ->
+                swipeHelperCallback.removePreviousClamp(this)
+                false
+            }
             setHasFixedSize(true)
         }
+
+        binding.detailName.text = categoryName
+        if(days != "null"){
+            binding.topTitle.text = days+"일 동안 발행된 리포트"
+        }
+        else{
+            binding.topTitle.text = "전체기간 동안 발행된 리포트"
+        }
+
     }
 
     override fun initDataBinding() {
-        val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
-        val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
-        val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-        val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
+        viewModel.suggestDetailResponse.observe(this) {
+            it.forEach { item ->
+                suggestsectorAdapter.addItem(item)
+            }
+            suggestsectorAdapter.notifyDataSetChanged()
+            binding.countTxt.text = it.size.toString()+"개"
+        }
 
-        suggestsectorAdapter.addItem(sectors1)
-        suggestsectorAdapter.addItem(sectors2)
-        suggestsectorAdapter.addItem(sectors3)
-        suggestsectorAdapter.addItem(sectors4)
-        suggestsectorAdapter.notifyDataSetChanged()
+        viewModel.scrapResponse.observe(this) {
+            if(it){
+                dismissLoadingDialog()
+            }
+        }
     }
 
     override fun initAfterBinding() {
         // move detail
         suggestsectorAdapter.moveItemClickListener(object : SuggestSectorAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                navController.navigate(R.id.action_suggestDetailFragment_to_detailFragment)
+                val args = suggestsectorAdapter.getItem(a_position).company_id
+                val action = SuggestDetailFragmentDirections.actionSuggestDetailFragmentToDetailFragment(args!!)
+                navController.navigate(action)
+            }
+        })
+
+        // scrap
+        suggestsectorAdapter.scrapItemClickListener(object : SuggestSectorAdapter.OnItemClickEventListener {
+            override fun onItemClick(a_view: View?, a_position: Int) {
+                var request = suggestsectorAdapter.getItem(a_position)
+
+                val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
+                    request.targetPrice, request.writerCompany, request.writer)
+                viewModel.insertSearch(insert)
+                showLoadingDialog(requireContext())
             }
         })
 
@@ -71,48 +130,20 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
 
         binding.sortBtn.setOnClickListener {
             sortClear(binding.sortBtn, binding.sortBuyBtn, binding.sortHoldBtn, binding.sortNrBtn)
-
-            suggestsectorAdapter.clear()
-            val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
-            val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
-            val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-            val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
-
-            suggestsectorAdapter.addItem(sectors1)
-            suggestsectorAdapter.addItem(sectors2)
-            suggestsectorAdapter.addItem(sectors3)
-            suggestsectorAdapter.addItem(sectors4)
-            suggestsectorAdapter.notifyDataSetChanged()
         }
 
         binding.sortBuyBtn.setOnClickListener {
             binding.sortBtn.setImageResource(R.drawable.ic_sort_click)
             suggestsectorAdapter.clear()
-            sortClick(binding.sortBtn, binding.sortBuyBtn, binding.sortNrBtn, binding.sortHoldBtn, "BUY")
-            val sectors1 = Sectors("335870","카카오", 95000, 129000, "BUY", "유진투자증권")
-            val sectors4 = Sectors("335870","요기요", 95000, 200000, "BUY", "유진투자증권")
-
-            suggestsectorAdapter.addItem(sectors1)
-            suggestsectorAdapter.addItem(sectors4)
-            suggestsectorAdapter.notifyDataSetChanged()
         }
 
         binding.sortNrBtn.setOnClickListener {
             suggestsectorAdapter.clear()
-            sortClick(binding.sortBtn, binding.sortNrBtn, binding.sortBuyBtn, binding.sortHoldBtn, "NR")
-            val sectors2 = Sectors("335870","위메프", 95000, 100000, "NR", "유진투자증권")
-
-            suggestsectorAdapter.addItem(sectors2)
-            suggestsectorAdapter.notifyDataSetChanged()
         }
 
         binding.sortHoldBtn.setOnClickListener {
             suggestsectorAdapter.clear()
             sortClick(binding.sortBtn, binding.sortHoldBtn, binding.sortNrBtn, binding.sortBuyBtn, "HOLD")
-            val sectors3 = Sectors("335870","배달의민족", 95000, 129000, "HOLD", "유진투자증권")
-
-            suggestsectorAdapter.addItem(sectors3)
-            suggestsectorAdapter.notifyDataSetChanged()
         }
     }
 

@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorHolderPage
 import com.lightone.lighthouse.kotlin.src.home.model.Sectors
+import com.lightone.lighthouse.kotlin.src.suggest_detail.model.SuggestDetailResponse
 
 class SuggestSectorAdapter() :
     RecyclerView.Adapter<SuggestSectorHolderPage>(){
-    var datas = ArrayList<Sectors>()
+    var datas = ArrayList<SuggestDetailResponse>()
 
-    private val itemList = ArrayList<Sectors>()
+    private val itemList = ArrayList<SuggestDetailResponse>()
 
 
     interface OnItemClickEventListener {
@@ -28,12 +29,18 @@ class SuggestSectorAdapter() :
         mItemClickListener = a_listener
     }
 
+    private var scrapItemClickListener: OnItemClickEventListener? = null
+
+    fun scrapItemClickListener(a_listener: OnItemClickEventListener) {
+        scrapItemClickListener = a_listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuggestSectorHolderPage {
         val context: Context = parent.context
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.sectors_item, parent, false)
 
-        return SuggestSectorHolderPage(view, mItemClickListener)
+        return SuggestSectorHolderPage(view, mItemClickListener, scrapItemClickListener)
     }
 
     override fun onBindViewHolder(holder: SuggestSectorHolderPage, position: Int) {
@@ -47,11 +54,11 @@ class SuggestSectorAdapter() :
         return itemList.size
     }
 
-    fun addItem(item: Sectors) {
+    fun addItem(item: SuggestDetailResponse) {
         itemList.add(item)
     }
 
-    fun getItem(position: Int): Sectors {
+    fun getItem(position: Int): SuggestDetailResponse {
         return itemList[position]
     }
 

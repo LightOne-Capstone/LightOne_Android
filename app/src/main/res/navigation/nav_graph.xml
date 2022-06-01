@@ -60,6 +60,12 @@
         android:name="com.lightone.lighthouse.kotlin.src.suggest_detail.SuggestDetailFragment"
         android:label="fragment_suggest_detail"
         tools:layout="@layout/fragment_suggest_detail" >
+        <argument
+            android:name="categoryName"
+            app:argType="string"/>
+        <argument
+            android:name="days"
+            app:argType="string"/>
         <action
             android:id="@+id/action_suggestDetailFragment_to_detailFragment"
             app:destination="@id/detailFragment" />

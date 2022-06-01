@@ -18,7 +18,7 @@ class SuggestViewModel(private val model: SuggestDataModel) : BaseViewModel() {
     val suggestResponse: LiveData<List<Suggests>>
         get() = _suggestResponse
 
-    fun getSuggest(days: String) {
+    fun getSuggest(days: String?) {
         addDisposable(model.getData(days)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
