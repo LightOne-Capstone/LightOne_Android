@@ -21,6 +21,8 @@ import com.lightone.lighthouse.kotlin.config.BaseFragment
 import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.config.MyConstant.Companion.BASE_URL
 import com.lightone.lighthouse.kotlin.databinding.FragmentDetailBinding
+import com.lightone.lighthouse.kotlin.src.detail.model.ReportDetail
+import com.lightone.lighthouse.kotlin.src.dialog.NoReportDialog
 import com.lightone.lighthouse.kotlin.util.priceFormatter
 import com.lightone.lighthouse.kotlin.viewmodel.DetailViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +40,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
 
     lateinit var chart: LineChart
 
-
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
         val args: DetailFragmentArgs by navArgs()
@@ -48,7 +49,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
 
     override fun initDataBinding() {
 
-        viewModel.detailchartResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.detailchartResponse.observe(viewLifecycleOwner, Observer { it ->
             // 차트 관련
             chart = binding.detailChart
             val value: ArrayList<Entry> = ArrayList()
@@ -83,34 +84,46 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
             // set data
             chart.data = data
 
-
             // 보고서 내용 관련
-            val detail = it.reports[0]
-            binding.companyTxt.text = detail.company_name
-            binding.serialTxt.text = detail.company_id
-            binding.daysTxt.text = detail.date+"기준"
-            binding.priceTxt.text = priceFormatter(detail.currentPrice) +"원"
-            suggestBackground(detail.suggestion)
-            binding.reportContent.text = detail.summery
-            binding.reportDetailContent.text = detail.keyword
-            binding.reportName.text = detail.writerCompany+" "+detail.writer
-            binding.targetPrice.text = "목표주가 "+priceFormatter(detail.targetPrice)+"원"
+            if(it.reports.isEmpty()){
+                navController.popBackStack()
+                val noReportDialog: NoReportDialog = NoReportDialog {
+                    when (it) {
+                        1 -> {
+                            navController.popBackStack()
+                        }
+                    }
+                }
+                noReportDialog.show(requireActivity().supportFragmentManager, noReportDialog.tag)
+            }
+            else{
+                val detail = it.reports[0]
+                binding.companyTxt.text = detail.company_name
+                binding.serialTxt.text = detail.company_id
+                binding.daysTxt.text = detail.date+"기준"
+                binding.priceTxt.text = priceFormatter(detail.currentPrice) +"원"
+                suggestBackground(detail.suggestion)
+                binding.reportContent.text = detail.summery
+                binding.reportDetailContent.text = detail.keyword
+                binding.reportName.text = detail.writerCompany+" "+detail.writer
+                binding.targetPrice.text = "목표주가 "+priceFormatter(detail.targetPrice)+"원"
 
-            binding.reportPdfUrl.text = detail.pdfURL
-            val text = detail.pdfURL
-            val tvLinkify: TextView = binding.reportPdfUrl
-            tvLinkify.text = text
-            val mTransform =
-                Linkify.TransformFilter { match, url -> "" }
-            val pattern1: Pattern = Pattern.compile(text)
-            Linkify.addLinks(tvLinkify, pattern1, text, null, mTransform)
+                binding.reportPdfUrl.text = detail.pdfURL
+                val text = detail.pdfURL
+                val tvLinkify: TextView = binding.reportPdfUrl
+                tvLinkify.text = text
+                val mTransform =
+                    Linkify.TransformFilter { match, url -> "" }
+                val pattern1: Pattern = Pattern.compile(text)
+                Linkify.addLinks(tvLinkify, pattern1, text, null, mTransform)
 
-            var word = detail.pdfURL.split("/")
-            Log.d("glide_response", BASE_URL+"/"+word.last()+".png")
-            Glide.with(this)
-                .load(BASE_URL+"/wordcloud/"+word.last()+".png")
-                .fitCenter()
-                .into(binding.wordImg)
+                var word = detail.pdfURL.split("/")
+                Log.d("glide_response", BASE_URL+"/"+word.last()+".png")
+                Glide.with(this)
+                    .load(BASE_URL+"/wordcloud/"+word.last()+".png")
+                    .fitCenter()
+                    .into(binding.wordImg)
+            }
         })
     }
 

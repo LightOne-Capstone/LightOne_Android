@@ -10,10 +10,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
 import com.lightone.lighthouse.kotlin.databinding.FragmentScrapBinding
+import com.lightone.lighthouse.kotlin.src.dialog.AddScrapDialog
+import com.lightone.lighthouse.kotlin.src.dialog.DeleteScrapDialog
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
 import com.lightone.lighthouse.kotlin.util.DeleteScrapTouchCallback
 import com.lightone.lighthouse.kotlin.viewmodel.ScraplViewModel
@@ -30,7 +33,7 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
 
     lateinit var navController: NavController
 
-    val swipeHelperCallback = DeleteScrapTouchCallback().apply {
+    private val swipeHelperCallback = DeleteScrapTouchCallback().apply {
         setClamp(200f)
     }
 
@@ -84,9 +87,16 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
         // delete btn
         scrapAdapter.deleteItemClickListener(object : ScrapeAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                val idx = scrapAdapter.getItem(a_position).idx
-                showLoadingDialog(requireContext())
-                viewModel.deleteScrap(idx)
+                val deleteScrapDialog: DeleteScrapDialog = DeleteScrapDialog {
+                    when (it) {
+                        1 -> {
+                            val idx = scrapAdapter.getItem(a_position).idx
+                            showLoadingDialog(requireContext())
+                            viewModel.deleteScrap(idx)
+                        }
+                    }
+                }
+                deleteScrapDialog.show(requireActivity().supportFragmentManager, deleteScrapDialog.tag)
             }
         })
 

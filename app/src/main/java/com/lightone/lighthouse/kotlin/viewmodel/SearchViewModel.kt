@@ -9,13 +9,18 @@ import com.lightone.lighthouse.kotlin.Database.model.UserSearch
 import com.lightone.lighthouse.kotlin.config.BaseViewModel
 import com.lightone.lighthouse.kotlin.src.search.model.Search
 import com.lightone.lighthouse.kotlin.src.search.model.SearchDataModel
+import com.lightone.lighthouse.kotlin.src.suggest.model.SuggestDataModel
+import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val dao: SearchDao,
-                      private val model: SearchDataModel) : BaseViewModel() {
+class SearchViewModel(
+    private val dao: SearchDao,
+    private val model: SearchDataModel,
+    private val model2: SuggestDataModel
+    ) : BaseViewModel() {
 
     private val TAG = "SearchViewModel"
 
@@ -65,5 +70,23 @@ class SearchViewModel(private val dao: SearchDao,
                 _deletesuccessResponse.postValue(true)
             }
         }
+    }
+
+    private val _tagResponse = MutableLiveData<List<Suggests>>()
+    val tagResponse: LiveData<List<Suggests>>
+        get() = _tagResponse
+
+    fun tagList() {
+        addDisposable(model2.getData(null)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                it.run {
+                    _tagResponse.postValue(this)
+                }
+            }, {
+                Log.d(TAG, "response error, message : ${it.message}")
+            })
+        )
     }
 }

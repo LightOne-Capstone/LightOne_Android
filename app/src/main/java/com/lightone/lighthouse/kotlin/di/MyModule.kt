@@ -16,6 +16,7 @@ import com.lightone.lighthouse.kotlin.src.home.service.ReportAPI
 import com.lightone.lighthouse.kotlin.src.home.service.ReportDataImpl
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapeAdapter
 import com.lightone.lighthouse.kotlin.src.search.adapter.RecentsAdapter
+import com.lightone.lighthouse.kotlin.src.search.adapter.TagAdapter
 import com.lightone.lighthouse.kotlin.src.search.model.SearchDataModel
 import com.lightone.lighthouse.kotlin.src.search.service.SearchAPI
 import com.lightone.lighthouse.kotlin.src.search.service.SearchDataImpl
@@ -132,6 +133,9 @@ var adapterPart = module {
     factory {
         ScrapeAdapter()
     }
+    factory {
+        TagAdapter()
+    }
 }
 
 var modelPart = module {
@@ -155,7 +159,7 @@ var modelPart = module {
 var viewModelPart = module {
     viewModel { MainViewModel() }
     viewModel { HomeViewModel(get(), get()) }
-    viewModel { SearchViewModel(get(), get()) }
+    viewModel { SearchViewModel(get(), get(), get()) }
     viewModel { DetailViewModel(get()) }
     viewModel { SuggestViewModel(get() ) }
     viewModel { SuggestDetailViewModel(get(), get()) }

@@ -89,7 +89,6 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, SearchVie
         recentAdapter.nextItemClickListener(object : RecentsAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
                 val request = recentAdapter.getItem(a_position)
-//                navController.navigate(R.id.action_searchFragment_to_detailFragment)
 
                 val args = request.id
                 val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(args)

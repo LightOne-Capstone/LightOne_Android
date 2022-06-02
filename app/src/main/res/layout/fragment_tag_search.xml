@@ -7,12 +7,43 @@
     <data>
         <variable
             name="vm"
-            type="com.lightone.lighthouse.kotlin.viewmodel.TagSearchViewModel" />
+            type="com.lightone.lighthouse.kotlin.viewmodel.SearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tag_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="최근 뜨는 산업"
+            android:textColor="@color/main"
+            android:textSize="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp">
+        </TextView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tag_txt"
+            android:paddingBottom="80dp"
+            android:layout_margin="16dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tag_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never">
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

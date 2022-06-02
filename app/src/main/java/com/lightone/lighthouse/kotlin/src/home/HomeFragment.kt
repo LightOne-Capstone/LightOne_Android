@@ -12,6 +12,8 @@ import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.config.BaseFragment
 import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.databinding.FragmentHomeBinding
+import com.lightone.lighthouse.kotlin.src.dialog.AddScrapDialog
+import com.lightone.lighthouse.kotlin.src.dialog.NoReportDialog
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
 import com.lightone.lighthouse.kotlin.src.home.model.Days
@@ -48,6 +50,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     }
 
     override fun initDataBinding() {
+        viewModel.scrapResponse.observe(this) {
+            if(it){
+                dismissLoadingDialog()
+            }
+        }
+
         viewModel.reportdResponse.observe(this, Observer {
             daysAdapter.clear()
             itemList.clear()
@@ -59,7 +67,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     break
                 }
                 val item = it[i]
-                itemList.add(item)
+                if(it.isNotEmpty()){
+                    itemList.add(item)
+                }
                 if(item.date != dateCheck){
                     val request = Days(dateCheck, itemList)
                     dateCheck = item.date
@@ -96,16 +106,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     if(itemList[i].company_id == sceapIdx){request = itemList[i]}
                 }
 
-                val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
-                    request.targetPrice, request.writerCompany, request.writer)
-                viewModel.insertSearch(insert)
-                showLoadingDialog(requireContext())
-
-                viewModel.scrapResponse.observe(this@HomeFragment, Observer {
-                    if(it){
-                        dismissLoadingDialog()
+                val addScrapDialog: AddScrapDialog = AddScrapDialog {
+                    when (it) {
+                        1 -> {
+                            val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
+                                request.targetPrice, request.writerCompany, request.writer)
+                            viewModel.insertSearch(insert)
+                            showLoadingDialog(requireContext())
+                        }
                     }
-                })
+                }
+                addScrapDialog.show(requireActivity().supportFragmentManager, addScrapDialog.tag)
             }
         })
 
