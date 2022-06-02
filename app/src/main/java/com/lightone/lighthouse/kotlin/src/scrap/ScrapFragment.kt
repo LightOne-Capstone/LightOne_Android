@@ -33,6 +33,8 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
 
     lateinit var navController: NavController
 
+    var itemSuggestion: String = ""
+
     private val swipeHelperCallback = DeleteScrapTouchCallback().apply {
         setClamp(200f)
     }
@@ -57,14 +59,14 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
     }
 
     override fun initDataBinding() {
-        viewModel.getScrapList().observe(this, Observer {
+        viewModel.getScrapList().observe(this) {
             scrapAdapter.clear()
-            Log.d("scrap_list", it.toString())
             it.forEach { item ->
                 scrapAdapter.addItem(item)
             }
+
             scrapAdapter.notifyDataSetChanged()
-        })
+        }
 
         viewModel.deleteResponse.observe(this, Observer {
             dismissLoadingDialog()
@@ -91,12 +93,14 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
                     when (it) {
                         1 -> {
                             val idx = scrapAdapter.getItem(a_position).idx
+                            swipeHelperCallback.removeNowClamp(binding.scrapRecycler)
                             showLoadingDialog(requireContext())
                             viewModel.deleteScrap(idx)
                         }
                     }
                 }
                 deleteScrapDialog.show(requireActivity().supportFragmentManager, deleteScrapDialog.tag)
+
             }
         })
 
@@ -104,11 +108,26 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             navController.popBackStack()
         }
 
+        binding.sortBuyBtn.setOnClickListener {
+            sortClick(binding.sortBtn, binding.sortBuyBtn, binding.sortNrBtn, binding.sortHoldBtn, "BUY")
+        }
+        binding.sortNrBtn.setOnClickListener {
+            sortClick(binding.sortBtn, binding.sortNrBtn, binding.sortBuyBtn, binding.sortHoldBtn, "NR")
+        }
+        binding.sortHoldBtn.setOnClickListener {
+            sortClick(binding.sortBtn, binding.sortHoldBtn, binding.sortBuyBtn, binding.sortNrBtn, "HOLD")
+        }
+
+        binding.sortBtn.setOnClickListener {
+            sortClear()
+        }
+
     }
 
-    fun sortClick(all: ImageView, click: TextView, another1: TextView, another2: TextView, status: String){
+    private fun sortClick(all: ImageView, click: TextView, another1: TextView, another2: TextView, status: String){
         all.setImageResource(R.drawable.ic_sort_click)
         click.setTextColor(Color.parseColor("#FFFFFF"))
+        itemSuggestion = status
         if(status == "NR"){
             click.setBackgroundResource(R.drawable.nr_custom)
         }
@@ -123,16 +142,37 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
         another1.setBackgroundResource(R.drawable.sort_btn_custom)
         another2.setTextColor(Color.parseColor("#000000"))
         another2.setBackgroundResource(R.drawable.sort_btn_custom)
+
+        viewModel.getScrapList().observe(this) {
+            scrapAdapter.clear()
+            it.forEach { item ->
+                if(item.suggestion == itemSuggestion){
+                    scrapAdapter.addItem(item)
+                }
+            }
+            scrapAdapter.notifyDataSetChanged()
+        }
     }
 
-    fun sortClear(all: ImageView, item1: TextView, item2: TextView, item3: TextView){
-        all.setImageResource(R.drawable.ic_sort)
+    private fun sortClear(){
+        binding.sortBtn.setImageResource(R.drawable.ic_sort)
+        itemSuggestion = ""
 
-        item1.setTextColor(Color.parseColor("#000000"))
-        item1.setBackgroundResource(R.drawable.sort_btn_custom)
-        item2.setTextColor(Color.parseColor("#000000"))
-        item2.setBackgroundResource(R.drawable.sort_btn_custom)
-        item3.setTextColor(Color.parseColor("#000000"))
-        item3.setBackgroundResource(R.drawable.sort_btn_custom)
+        binding.sortBuyBtn.setTextColor(Color.parseColor("#000000"))
+        binding.sortBuyBtn.setBackgroundResource(R.drawable.sort_btn_custom)
+
+        binding.sortNrBtn.setTextColor(Color.parseColor("#000000"))
+        binding.sortNrBtn.setBackgroundResource(R.drawable.sort_btn_custom)
+
+        binding.sortHoldBtn.setTextColor(Color.parseColor("#000000"))
+        binding.sortHoldBtn.setBackgroundResource(R.drawable.sort_btn_custom)
+
+        viewModel.getScrapList().observe(this) {
+            scrapAdapter.clear()
+            it.forEach { item ->
+                scrapAdapter.addItem(item)
+            }
+            scrapAdapter.notifyDataSetChanged()
+        }
     }
 }

@@ -31,17 +31,19 @@ class SectorHolderPage internal constructor(
 
         company_txt.text = data.company_name+" "+priceFormatter(data.currentPrice)+"원"
 
-        if(data.suggestion == "BUY"){
-            status_txt.text = data.suggestion
-            status_txt.setBackgroundResource(R.drawable.buy_custom)
-        }
-        else if(data.suggestion =="NR"){
-            status_txt.text = data.suggestion
-            status_txt.setBackgroundResource(R.drawable.nr_custom)
-        }
-        else{
-            status_txt.text = data.suggestion
-            status_txt.setBackgroundResource(R.drawable.hold_custom)
+        when (data.suggestion) {
+            "BUY" -> {
+                status_txt.text = data.suggestion
+                status_txt.setBackgroundResource(R.drawable.buy_custom)
+            }
+            "NR" -> {
+                status_txt.text = data.suggestion
+                status_txt.setBackgroundResource(R.drawable.nr_custom)
+            }
+            else -> {
+                status_txt.text = data.suggestion
+                status_txt.setBackgroundResource(R.drawable.hold_custom)
+            }
         }
 
         targetprice_txt.text = "목표가 "+priceFormatter(data.targetPrice) +"원"

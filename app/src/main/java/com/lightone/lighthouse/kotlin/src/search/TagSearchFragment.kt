@@ -49,8 +49,8 @@ class TagSearchFragment : BaseFragment<FragmentTagSearchBinding, SearchViewModel
     override fun initDataBinding() {
         viewModel.tagResponse.observe(this) {
             tagAdapter.clear()
-            it.sortedBy { it.count }
-            val tagList = it.slice(0..11)
+
+            val tagList = it.sortedByDescending { it.count.toInt() }.slice(0..9)
             Log.d("tag_response", tagList.toString())
             var count = 1
             tagList.forEach { item ->

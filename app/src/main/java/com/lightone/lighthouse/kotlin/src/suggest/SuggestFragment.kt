@@ -41,13 +41,13 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
             }
             setHasFixedSize(true)
         }
-        daySelect(binding.dayBtn, binding.day15Btn, binding.day30Btn, binding.day60Btn)
+        daySelect(binding.dayBtn, binding.day90Btn, binding.day30Btn, binding.day60Btn)
     }
 
     override fun initDataBinding() {
-        viewModel.suggestResponse.observe(this){
+        viewModel.suggestResponse.observe(this){ it ->
             suggestAdapter.clear()
-            it.forEach { item ->
+            it.sortedByDescending { it.count.toInt() }.forEach { item ->
                 suggestAdapter.addItem(item)
             }
             suggestAdapter.notifyDataSetChanged()
@@ -67,16 +67,16 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
         })
 
         binding.dayBtn.setOnClickListener {
-            daySelect(binding.dayBtn, binding.day15Btn, binding.day30Btn, binding.day60Btn)
-        }
-        binding.day15Btn.setOnClickListener {
-            daySelect(binding.day15Btn, binding.dayBtn, binding.day60Btn, binding.day30Btn)
+            daySelect(binding.dayBtn, binding.day30Btn, binding.day60Btn, binding.day90Btn)
         }
         binding.day30Btn.setOnClickListener {
-            daySelect(binding.day30Btn, binding.dayBtn, binding.day15Btn, binding.day60Btn)
+            daySelect(binding.day30Btn, binding.dayBtn, binding.day60Btn, binding.day90Btn)
         }
         binding.day60Btn.setOnClickListener {
-            daySelect(binding.day60Btn, binding.dayBtn, binding.day30Btn, binding.day15Btn)
+            daySelect(binding.day60Btn, binding.dayBtn, binding.day90Btn, binding.day30Btn)
+        }
+        binding.day90Btn.setOnClickListener {
+            daySelect(binding.day90Btn, binding.dayBtn, binding.day30Btn, binding.day60Btn)
         }
     }
 
@@ -92,14 +92,14 @@ class SuggestFragment : BaseFragment<FragmentSuggestBinding, SuggestViewModel>(R
         other3.setBackgroundResource(R.drawable.sort_btn_custom)
 
         days = when (select.text) {
-            "15일" -> {
-                "15"
-            }
-            "30일" -> {
+            "1개월" -> {
                 "30"
             }
-            "60일" -> {
+            "2개월" -> {
                 "60"
+            }
+            "3개월" -> {
+                "90"
             }
             else -> {
                 null

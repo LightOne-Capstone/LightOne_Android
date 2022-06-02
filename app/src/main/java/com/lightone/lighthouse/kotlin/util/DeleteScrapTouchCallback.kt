@@ -137,4 +137,13 @@ class DeleteScrapTouchCallback() : ItemTouchHelper.Callback() {
             previousPosition = null
         }
     }
+
+    fun removeNowClamp(recyclerView: RecyclerView) {
+        currentPosition?.let {
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(it)
+            getView(viewHolder!!).translationX = 0f
+            setTag(viewHolder, false)
+            previousPosition = null
+        }
+    }
 }

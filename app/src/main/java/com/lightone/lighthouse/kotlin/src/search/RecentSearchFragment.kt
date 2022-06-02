@@ -60,7 +60,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, SearchVie
             }
         })
 
-        viewModel.searchResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.searchResponse.observe(viewLifecycleOwner) {
             recentAdapter.clear()
             binding.recentTxt.visibility = View.GONE
             it.forEach { item ->
@@ -68,7 +68,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, SearchVie
                 recentAdapter.addItem(item)
             }
             recentAdapter.notifyDataSetChanged()
-        })
+        }
     }
 
     override fun initAfterBinding() {

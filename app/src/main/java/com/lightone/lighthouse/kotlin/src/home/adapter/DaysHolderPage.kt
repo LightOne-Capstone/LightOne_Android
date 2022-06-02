@@ -62,6 +62,7 @@ class DaysHolderPage internal constructor(
                 val editor = MyApplication.editor
                 editor.putString("scrapIdx", sectorAdapter.getItem(a_position).company_id)
                 editor.commit()
+                swipeHelperCallback.removeNowClamp(sector_recycler)
                 scrapItemClickListener!!.onItemClick(a_view, a_position)
             }
         })

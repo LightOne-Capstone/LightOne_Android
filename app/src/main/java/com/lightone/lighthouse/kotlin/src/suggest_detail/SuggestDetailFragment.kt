@@ -186,17 +186,19 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         }
     }
 
-    fun sortClick(all: ImageView, click: TextView, another1: TextView, another2: TextView, status: String){
+    private fun sortClick(all: ImageView, click: TextView, another1: TextView, another2: TextView, status: String){
         all.setImageResource(R.drawable.ic_sort_click)
         click.setTextColor(Color.parseColor("#FFFFFF"))
-        if(status == "NR"){
-            click.setBackgroundResource(R.drawable.nr_custom)
-        }
-        else if(status == "HOLD"){
-            click.setBackgroundResource(R.drawable.hold_custom)
-        }
-        else{
-            click.setBackgroundResource(R.drawable.buy_custom)
+        when (status) {
+            "NR" -> {
+                click.setBackgroundResource(R.drawable.nr_custom)
+            }
+            "HOLD" -> {
+                click.setBackgroundResource(R.drawable.hold_custom)
+            }
+            else -> {
+                click.setBackgroundResource(R.drawable.buy_custom)
+            }
         }
 
         another1.setTextColor(Color.parseColor("#000000"))
@@ -205,7 +207,7 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         another2.setBackgroundResource(R.drawable.sort_btn_custom)
     }
 
-    fun sortClear(all: ImageView, item1: TextView, item2: TextView, item3: TextView){
+    private fun sortClear(all: ImageView, item1: TextView, item2: TextView, item3: TextView){
         all.setImageResource(R.drawable.ic_sort)
 
         item1.setTextColor(Color.parseColor("#000000"))

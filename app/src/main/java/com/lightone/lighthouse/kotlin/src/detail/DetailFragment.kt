@@ -21,11 +21,17 @@ import com.lightone.lighthouse.kotlin.config.BaseFragment
 import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.config.MyConstant.Companion.BASE_URL
 import com.lightone.lighthouse.kotlin.databinding.FragmentDetailBinding
+import com.lightone.lighthouse.kotlin.src.detail.model.Chart
 import com.lightone.lighthouse.kotlin.src.detail.model.ReportDetail
 import com.lightone.lighthouse.kotlin.src.dialog.NoReportDialog
 import com.lightone.lighthouse.kotlin.util.priceFormatter
 import com.lightone.lighthouse.kotlin.viewmodel.DetailViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.w3c.dom.Text
 import java.util.regex.Pattern
 
 
@@ -40,53 +46,29 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
 
     lateinit var chart: LineChart
 
+    var itemList = ArrayList<Chart>()
+
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
         val args: DetailFragmentArgs by navArgs()
         val request = args.idx
         viewModel.detailChart(request)
+        showLoadingDialog(requireContext())
     }
 
     override fun initDataBinding() {
+        chart = binding.detailChart
 
-        viewModel.detailchartResponse.observe(viewLifecycleOwner, Observer { it ->
-            // 차트 관련
-            chart = binding.detailChart
-            val value: ArrayList<Entry> = ArrayList()
-
-            for(i in 0..100){
-                value.add(Entry(i.toFloat(), (it.prices[i].terminalPrice/100).toFloat()))
+        viewModel.detailchartResponse.observe(viewLifecycleOwner) { it ->
+            itemList.clear()
+            it.prices.forEach { item->
+                itemList.add(item)
             }
-
-            val set = LineDataSet(value, "평균가격")
-
-            // add the data sets
-            val dataSets: ArrayList<ILineDataSet> = ArrayList()
-            dataSets.add(set)
-
-            // line color
-            set.color = Color.parseColor("#0DB7B7")
-            set.lineWidth = 2f
-
-            // 꼭지점
-            set.setCircleColor(Color.parseColor("#4D0DB7B7"))
-
-            // chart 하단
-            set.valueTextSize = 0f
-            set.setDrawFilled(true) //그래프 밑부분 색칠
-            set.setDrawCircles(false) // 그래프 둥글게
-
-            set.fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_color)
-
-            // create a data object with the data sets
-            val data = LineData(dataSets)
-
-            // set data
-            chart.data = data
+            setupChart(null)
+            monthClick(binding.dayBtn, binding.day30Btn, binding.day60Btn, binding.day90Btn)
 
             // 보고서 내용 관련
             if(it.reports.isEmpty()){
-                navController.popBackStack()
                 val noReportDialog: NoReportDialog = NoReportDialog {
                     when (it) {
                         1 -> {
@@ -104,7 +86,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
                 binding.priceTxt.text = priceFormatter(detail.currentPrice) +"원"
                 suggestBackground(detail.suggestion)
                 binding.reportContent.text = detail.summery
-                binding.reportDetailContent.text = detail.keyword
                 binding.reportName.text = detail.writerCompany+" "+detail.writer
                 binding.targetPrice.text = "목표주가 "+priceFormatter(detail.targetPrice)+"원"
 
@@ -124,7 +105,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
                     .fitCenter()
                     .into(binding.wordImg)
             }
-        })
+            dismissLoadingDialog()
+        }
     }
 
     override fun initAfterBinding() {
@@ -135,18 +117,92 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
         binding.scrapBtn.setOnClickListener {
             navController.navigate(R.id.action_detailFragment_to_scrapFragment)
         }
+
+        binding.dayBtn.setOnClickListener {
+            setupChart(null)
+            monthClick(binding.dayBtn, binding.day30Btn, binding.day60Btn, binding.day90Btn)
+        }
+        binding.day30Btn.setOnClickListener {
+            setupChart(30)
+            monthClick(binding.day30Btn, binding.day60Btn, binding.dayBtn, binding.day90Btn)
+        }
+        binding.day60Btn.setOnClickListener {
+            setupChart(60)
+            monthClick(binding.day60Btn, binding.day30Btn, binding.dayBtn, binding.day90Btn)
+        }
+        binding.day90Btn.setOnClickListener {
+            setupChart(90)
+            monthClick(binding.day90Btn, binding.day30Btn, binding.day60Btn, binding.dayBtn)
+        }
     }
 
-    fun suggestBackground(data: String) {
+    private fun suggestBackground(data: String) {
         binding.statusTxt.text = data
-        if(data == "BUY"){
-            binding.statusTxt.setBackgroundResource(R.drawable.buy_custom)
+        when (data) {
+            "BUY" -> {
+                binding.statusTxt.setBackgroundResource(R.drawable.buy_custom)
+            }
+            "NR" -> {
+                binding.statusTxt.setBackgroundResource(R.drawable.nr_custom)
+            }
+            else -> {
+                binding.statusTxt.setBackgroundResource(R.drawable.hold_custom)
+            }
         }
-        else if(data =="NR"){
-            binding.statusTxt.setBackgroundResource(R.drawable.nr_custom)
+    }
+
+    private fun setupChart(days: Int?){
+        // 차트 관련
+        val value: ArrayList<Entry> = ArrayList()
+        if(days != null){
+            for(i in 0..days){
+                value.add(Entry(i.toFloat(), (itemList[i].terminalPrice/100).toFloat()))
+            }
         }
         else{
-            binding.statusTxt.setBackgroundResource(R.drawable.hold_custom)
+            for(i in 0..100){
+                value.add(Entry(i.toFloat(), (itemList[i].terminalPrice/100).toFloat()))
+            }
         }
+
+        val set = LineDataSet(value, "평균가격")
+
+        // line color
+        set.color = Color.parseColor("#0DB7B7")
+        set.lineWidth = 2f
+
+        // 꼭지점
+        set.setCircleColor(Color.parseColor("#4D0DB7B7"))
+
+        // chart 하단
+        set.valueTextSize = 0f
+        set.setDrawFilled(true) //그래프 밑부분 색칠
+        set.setDrawCircles(true) // 그래프 둥글게
+
+        set.fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_color)
+
+        // add the data sets
+        val dataSets: ArrayList<ILineDataSet> = ArrayList()
+        dataSets.add(set)
+
+        // create a data object with the data sets
+        val data = LineData(dataSets)
+        // set data
+        chart.data = data
+
+        // 차트 최신화
+        chart.invalidate()
+    }
+
+    private fun monthClick(select: TextView, other1: TextView, other2: TextView, other3: TextView){
+        select.setBackgroundResource(R.drawable.chart_month_custom)
+        select.setTextColor(Color.parseColor("#FFFFFF"))
+
+        other1.setTextColor(Color.parseColor("#000000"))
+        other1.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        other2.setTextColor(Color.parseColor("#000000"))
+        other2.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        other3.setTextColor(Color.parseColor("#000000"))
+        other3.setBackgroundColor(Color.parseColor("#FFFFFF"))
     }
 }

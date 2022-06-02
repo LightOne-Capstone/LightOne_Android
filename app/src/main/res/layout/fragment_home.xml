@@ -43,7 +43,7 @@
             android:id="@+id/days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="80dp">
+            android:paddingBottom="60dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/days_recycler"

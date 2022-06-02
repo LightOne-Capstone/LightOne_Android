@@ -84,7 +84,6 @@ class AddScrapTouchCallback() : ItemTouchHelper.Callback() {
                 actionState,
                 isCurrentlyActive
             )
-
         }
     }
 
@@ -133,6 +132,15 @@ class AddScrapTouchCallback() : ItemTouchHelper.Callback() {
         previousPosition?.let {
             val viewHolder = recyclerView.findViewHolderForAdapterPosition(it) ?: return
             getView(viewHolder).translationX = 0f
+            setTag(viewHolder, false)
+            previousPosition = null
+        }
+    }
+
+    fun removeNowClamp(recyclerView: RecyclerView) {
+        currentPosition?.let {
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(it)
+            getView(viewHolder!!).translationX = 0f
             setTag(viewHolder, false)
             previousPosition = null
         }

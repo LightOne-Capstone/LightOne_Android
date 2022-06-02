@@ -16,4 +16,10 @@
     <style name="tab_text" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="AppTheme.Splash">
+        <item name="android:statusBarColor">@color/main</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

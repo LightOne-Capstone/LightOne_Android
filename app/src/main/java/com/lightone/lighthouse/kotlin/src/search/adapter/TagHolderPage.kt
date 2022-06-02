@@ -17,7 +17,6 @@ class TagHolderPage internal constructor(
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val contents_txt :TextView
-    private val delete_btn :ImageView
     private val next_btn :ImageView
     private val num_txt :TextView
 
@@ -27,7 +26,6 @@ class TagHolderPage internal constructor(
 
         num_txt.text = data.Idx.toString()
         contents_txt.text = data.category
-        delete_btn.visibility = View.GONE
         next_btn.visibility = View.VISIBLE
 
         next_btn.setOnClickListener(View.OnClickListener { a_view ->
@@ -41,7 +39,6 @@ class TagHolderPage internal constructor(
     init {
         num_txt = itemView.findViewById(R.id.num_txt)
         contents_txt = itemView.findViewById(R.id.contents_txt)
-        delete_btn = itemView.findViewById(R.id.delete_btn)
         next_btn = itemView.findViewById(R.id.next_btn)
     }
 }
