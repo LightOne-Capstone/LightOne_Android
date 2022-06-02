@@ -85,10 +85,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
                 binding.daysTxt.text = detail.date+"기준"
                 binding.priceTxt.text = priceFormatter(detail.currentPrice) +"원"
                 suggestBackground(detail.suggestion)
-                binding.reportContent.text = detail.summery
+                binding.reportContent.text = detail.title
+                binding.reportSummary.text = detail.summery
                 binding.reportName.text = detail.writerCompany+" "+detail.writer
                 binding.targetPrice.text = "목표주가 "+priceFormatter(detail.targetPrice)+"원"
-
+                binding.reportDate.text = detail.date
                 binding.reportPdfUrl.text = detail.pdfURL
                 val text = detail.pdfURL
                 val tvLinkify: TextView = binding.reportPdfUrl
