@@ -19,3 +19,4 @@ Kotlin ver# LightOne_Android
 11. 2022.05.30(MON) -> Suggest Api Comp
 12. 2022.06.01(WEN) -> Suggest Detail Api Comp, Suggest Detail Logic Comp
 13. 2022.06.02(THU) -> Recent Popular Industry List Logic Complete, Add Scrap & Delete Scrap & Report Dialog Complete, Chart Update, Version 1 Release
+14. 2022.06.04(SAT) -> Industry Image Logic(Not yet)
