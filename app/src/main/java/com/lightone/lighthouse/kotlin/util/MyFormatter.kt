@@ -19,3 +19,12 @@ fun suggestImg(name: String): Int {
     }
     return img
 }
+
+fun industryImg(category: String): String{
+    if(category.contains("골프") || category.contains("악기") || category.contains("음반") ||
+        category.contains("디자인") || category.contains("예술") || category.contains("스포츠")) {
+            return "예술 & 체육"
+        }
+    else if()
+    return "null"
+}
