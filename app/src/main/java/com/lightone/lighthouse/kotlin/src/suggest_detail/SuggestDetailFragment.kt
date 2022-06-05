@@ -29,10 +29,12 @@ import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
 import com.lightone.lighthouse.kotlin.util.AddScrapTouchCallback
+import com.lightone.lighthouse.kotlin.util.suggestImg
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestDetailViewModel
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestViewModel
 import kotlinx.android.synthetic.main.days_item.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.suggest_item.*
 import org.koin.android.ext.android.inject
 
 class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, SuggestDetailViewModel>(R.layout.fragment_suggest_detail) {
@@ -55,7 +57,8 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         val args: SuggestDetailFragmentArgs by navArgs()
         categoryName = args.categoryName
         days = args.days
-        Log.d("days_response", days.toString())
+
+        binding.detailImg.setImageResource(suggestImg(args.categoryName))
 
         if(days == "null"){
             viewModel.suggestDetail(categoryName, null)
