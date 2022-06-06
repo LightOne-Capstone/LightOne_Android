@@ -10,6 +10,8 @@ import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.util.AddScrapTouchCallback
 import com.lightone.lighthouse.kotlin.util.DeleteScrapTouchCallback
+import io.reactivex.Single
+import java.util.concurrent.TimeUnit
 
 
 class DaysHolderPage internal constructor(
@@ -26,15 +28,18 @@ class DaysHolderPage internal constructor(
         days_txt.text = data.days
 
         var sectorAdapter = SectorAdapter()
+        var count = 0
         data.sectors.forEach { item ->
             if(item.date == data.days){
                 sectorAdapter.addItem(item)
+                count+1
             }
         }
 
         sectorAdapter.moveItemClickListener(object : SectorAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
-                val editor = MyApplication.editor.putString("Idx", sectorAdapter.getItem(a_position).company_id)
+                val editor = MyApplication.editor.putString("Idx", sectorAdapter.getReports(a_position).company_id)
+                editor.putString("date", sectorAdapter.getReports(a_position).date)
                 editor.commit()
                 mItemClickListener!!.onItemClick(a_view, a_position)
             }
@@ -60,7 +65,9 @@ class DaysHolderPage internal constructor(
         sectorAdapter.scrapItemClickListener(object : SectorAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
                 val editor = MyApplication.editor
-                editor.putString("scrapIdx", sectorAdapter.getItem(a_position).company_id)
+                editor.putString("scrapIdx", sectorAdapter.getReports(a_position).company_id)
+                editor.putString("Idx", sectorAdapter.getReports(a_position).company_id)
+                editor.putString("date", sectorAdapter.getReports(a_position).date)
                 editor.commit()
                 swipeHelperCallback.removeNowClamp(sector_recycler)
                 scrapItemClickListener!!.onItemClick(a_view, a_position)

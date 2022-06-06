@@ -118,7 +118,8 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         suggestsectorAdapter.moveItemClickListener(object : SuggestSectorAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
                 val args = suggestsectorAdapter.getItem(a_position).company_id
-                val action = SuggestDetailFragmentDirections.actionSuggestDetailFragmentToDetailFragment(args!!)
+                val date = suggestsectorAdapter.getItem(a_position).date
+                val action = SuggestDetailFragmentDirections.actionSuggestDetailFragmentToDetailFragment(args!!, date!!)
                 navController.navigate(action)
             }
         })
@@ -129,7 +130,7 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
                 var request = suggestsectorAdapter.getItem(a_position)
 
                 val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
-                    request.targetPrice, request.writerCompany, request.writer)
+                    request.targetPrice, request.writerCompany, request.writer, request.date)
                 viewModel.insertSearch(insert)
                 showLoadingDialog(requireContext())
             }

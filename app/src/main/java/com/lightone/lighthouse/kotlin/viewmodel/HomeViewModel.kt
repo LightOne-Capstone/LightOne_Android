@@ -35,7 +35,7 @@ class HomeViewModel(private val model: GetReportsDataModel,
                     _reportResponse.postValue(this)
                 }
             }, {
-                Log.d(TAG, "response error, message : ${it.message}")
+                getReportList()
             })
         )
     }

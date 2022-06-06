@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.Database.model.UserScrap
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.lightone.lighthouse.kotlin.R
@@ -20,8 +21,10 @@ import com.lightone.lighthouse.kotlin.src.home.model.Days
 import com.lightone.lighthouse.kotlin.src.home.model.Reports
 import com.lightone.lighthouse.kotlin.util.DeleteScrapTouchCallback
 import com.lightone.lighthouse.kotlin.viewmodel.HomeViewModel
+import io.reactivex.Single
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
 
@@ -60,12 +63,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             daysAdapter.clear()
             itemList.clear()
             var dateCheck = it[0].date
-            var dayCount = 1
+//            var dayCount = 1
 
             for(i in it.indices){
-                if(dayCount > 7){
-                    break
-                }
+//                if(dayCount > 7){
+//                    break
+//                }
                 val item = it[i]
                 if(it.isNotEmpty()){
                     itemList.add(item)
@@ -74,7 +77,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     val request = Days(dateCheck, itemList)
                     dateCheck = item.date
                     daysAdapter.addItem(request)
-                    dayCount+=1
+//                    dayCount+=1
                 }
             }
             daysAdapter.notifyDataSetChanged()
@@ -92,7 +95,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             override fun onItemClick(a_view: View?, a_position: Int) {
                 val args = MyApplication.sSharedPreferences.getString("Idx", null)
                 Log.d("click_log", args.toString())
-                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(args!!)
+                val date = MyApplication.sSharedPreferences.getString("date", null)
+                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(args!!, date!!)
                 navController.navigate(action)
             }
         })
@@ -110,7 +114,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     when (it) {
                         1 -> {
                             val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
-                                request.targetPrice, request.writerCompany, request.writer)
+                                request.targetPrice, request.writerCompany, request.writer, request.date)
                             viewModel.insertSearch(insert)
                             showLoadingDialog(requireContext())
                         }

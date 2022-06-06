@@ -39,10 +39,11 @@
             android:layout_margin="16dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintTop_toBottomOf="@id/service_name_txt"
+            app:layout_constraintTop_toBottomOf="@id/scrap_btn"
             android:id="@+id/days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:paddingBottom="60dp">
 
             <androidx.recyclerview.widget.RecyclerView

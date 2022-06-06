@@ -91,7 +91,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, SearchVie
                 val request = recentAdapter.getItem(a_position)
 
                 val args = request.id
-                val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(args)
+                val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(args, "null")
                 navController.navigate(action)
             }
         })

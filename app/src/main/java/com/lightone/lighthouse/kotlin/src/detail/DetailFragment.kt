@@ -47,11 +47,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
     lateinit var chart: LineChart
 
     var itemList = ArrayList<Chart>()
+    var date = ""
 
     override fun initStartView() {
         navController = Navigation.findNavController(requireView())
         val args: DetailFragmentArgs by navArgs()
         val request = args.idx
+        date = args.date
         viewModel.detailChart(request)
         showLoadingDialog(requireContext())
     }
@@ -79,7 +81,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
                 noReportDialog.show(requireActivity().supportFragmentManager, noReportDialog.tag)
             }
             else{
-                val detail = it.reports[0]
+                var detail = it.reports[0]
+                it.reports.forEach { item ->
+                    if(item.date == date){
+                        detail = item
+                    }
+                }
+
                 binding.companyTxt.text = detail.company_name
                 binding.serialTxt.text = detail.company_id
                 binding.daysTxt.text = detail.date+"기준"
@@ -178,7 +186,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
         // chart 하단
         set.valueTextSize = 0f
         set.setDrawFilled(true) //그래프 밑부분 색칠
-        set.setDrawCircles(true) // 그래프 둥글게
+        set.setDrawCircles(false) // 그래프 꼭지점
+        set.setDrawCircleHole(false) // 선 굵기
 
         set.fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.chart_color)
 

@@ -79,8 +79,9 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             override fun onItemClick(a_view: View?, a_position: Int) {
                 navController.navigate(R.id.action_scrapFragment_to_detailFragment)
                 val args = scrapAdapter.getItem(a_position).company_id
+                val date = scrapAdapter.getItem(a_position).date
                 Log.d("click_log", args.toString())
-                val action = ScrapFragmentDirections.actionScrapFragmentToDetailFragment(args!!)
+                val action = ScrapFragmentDirections.actionScrapFragmentToDetailFragment(args!!, date)
                 navController.navigateUp()
                 navController.navigate(action)
             }

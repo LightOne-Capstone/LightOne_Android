@@ -12,7 +12,8 @@ class UserScrap(
     val currentPrice: Int,
     val targetPrice: Int,
     val writerCompany: String,
-    val writer: String
+    val writer: String,
+    val date: String
 ){
     @PrimaryKey(autoGenerate = true) var idx: Int = 0
 }

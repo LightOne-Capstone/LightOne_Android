@@ -4,16 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.R
 import com.lightone.lighthouse.kotlin.src.home.model.Reports
 
-class SectorAdapter() :
-    RecyclerView.Adapter<SectorHolderPage>(){
+class SectorAdapter : PagingDataAdapter<Reports, SectorHolderPage>(CharacterComparator){
+//    RecyclerView.Adapter<SectorHolderPage>(){
     var datas = ArrayList<Reports>()
 
     private val itemList = ArrayList<Reports>()
-
 
     interface OnItemClickEventListener {
         fun onItemClick(a_view: View?, a_position: Int)
@@ -54,12 +55,20 @@ class SectorAdapter() :
         itemList.add(item)
     }
 
-    fun getItem(position: Int): Reports {
+    fun getReports(position: Int): Reports {
         return itemList[position]
     }
 
     fun clear() {
         itemList.clear()
         this.notifyDataSetChanged()
+    }
+
+    object CharacterComparator : DiffUtil.ItemCallback<Reports>() {
+        override fun areItemsTheSame(oldItem: Reports, newItem: Reports) =
+            oldItem.company_id == newItem.company_id
+
+        override fun areContentsTheSame(oldItem: Reports, newItem: Reports) =
+            oldItem == newItem
     }
 }
