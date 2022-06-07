@@ -3,6 +3,7 @@ package com.lightone.lighthouse.kotlin.src.home
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -82,8 +83,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
             daysAdapter.notifyDataSetChanged()
 
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(100)
+            lifecycleScope.launch {
+                delay(10)
                 dismissLoadingDialog()
             }
         })

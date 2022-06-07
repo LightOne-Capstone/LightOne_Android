@@ -127,4 +127,7 @@ dependencies {
     implementation "androidx.paging:paging-rxjava3:$paging_version"
     // optional - Guava ListenableFuture support
     implementation "androidx.paging:paging-guava:$paging_version"
+
+    // pdf viewer
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
 }
