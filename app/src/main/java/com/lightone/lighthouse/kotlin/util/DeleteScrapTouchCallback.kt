@@ -139,7 +139,7 @@ class DeleteScrapTouchCallback() : ItemTouchHelper.Callback() {
     }
 
     fun removeNowClamp(recyclerView: RecyclerView) {
-        currentPosition?.let {
+        previousPosition?.let {
             val viewHolder = recyclerView.findViewHolderForAdapterPosition(it)
             getView(viewHolder!!).translationX = 0f
             setTag(viewHolder, false)

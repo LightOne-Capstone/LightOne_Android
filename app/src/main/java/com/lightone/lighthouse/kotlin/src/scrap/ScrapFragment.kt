@@ -56,6 +56,11 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             }
             setHasFixedSize(true)
         }
+
+        viewModel.deleteResponse.observe(this, Observer {
+            swipeHelperCallback.removeNowClamp(binding.scrapRecycler)
+            dismissLoadingDialog()
+        })
     }
 
     override fun initDataBinding() {
@@ -68,9 +73,7 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             scrapAdapter.notifyDataSetChanged()
         }
 
-        viewModel.deleteResponse.observe(this, Observer {
-            dismissLoadingDialog()
-        })
+
     }
 
     override fun initAfterBinding() {
