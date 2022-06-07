@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorHolderPage
 import com.lightone.lighthouse.kotlin.src.scrap.adapter.ScrapHolderPage
+import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorHolderPage
 import kotlinx.android.synthetic.main.sectors_item.view.*
 import kotlin.math.max
 import kotlin.math.min
 
-class AddScrapTouchCallback() : ItemTouchHelper.Callback() {
+class AddScrapSuggestTouchCallback() : ItemTouchHelper.Callback() {
 
     private var currentPosition: Int? = null
     private var previousPosition: Int? = null
@@ -119,7 +120,7 @@ class AddScrapTouchCallback() : ItemTouchHelper.Callback() {
     }
 
     private fun getView(viewHolder: RecyclerView.ViewHolder) : View {
-        return (viewHolder as SectorHolderPage).itemView.sector_item
+        return (viewHolder as SuggestSectorHolderPage).itemView.sector_item
     }
 
     fun setClamp(clamp: Float) {

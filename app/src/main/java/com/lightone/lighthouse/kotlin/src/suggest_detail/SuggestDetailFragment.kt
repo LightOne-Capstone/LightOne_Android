@@ -20,6 +20,7 @@ import com.lightone.lighthouse.kotlin.config.MyApplication
 import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestBinding
 import com.lightone.lighthouse.kotlin.databinding.FragmentSuggestDetailBinding
 import com.lightone.lighthouse.kotlin.src.detail.DetailFragmentArgs
+import com.lightone.lighthouse.kotlin.src.dialog.AddScrapDialog
 import com.lightone.lighthouse.kotlin.src.home.HomeFragmentDirections
 import com.lightone.lighthouse.kotlin.src.home.adapter.DaysAdapter
 import com.lightone.lighthouse.kotlin.src.home.adapter.SectorAdapter
@@ -28,6 +29,7 @@ import com.lightone.lighthouse.kotlin.src.home.model.Sectors
 import com.lightone.lighthouse.kotlin.src.suggest.adapter.SuggestAdapter
 import com.lightone.lighthouse.kotlin.src.suggest.model.Suggests
 import com.lightone.lighthouse.kotlin.src.suggest_detail.adapter.SuggestSectorAdapter
+import com.lightone.lighthouse.kotlin.util.AddScrapSuggestTouchCallback
 import com.lightone.lighthouse.kotlin.util.AddScrapTouchCallback
 import com.lightone.lighthouse.kotlin.util.suggestImg
 import com.lightone.lighthouse.kotlin.viewmodel.SuggestDetailViewModel
@@ -70,7 +72,7 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         }
         binding.detailName.text = categoryName
 
-        val swipeHelperCallback = AddScrapTouchCallback().apply {
+        val swipeHelperCallback = AddScrapSuggestTouchCallback().apply {
             setClamp(200f)
         }
         val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
@@ -83,9 +85,17 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
             }
             setOnTouchListener { _, _ ->
                 swipeHelperCallback.removePreviousClamp(this)
+                swipeHelperCallback.removeNowClamp(this)
                 false
             }
             setHasFixedSize(true)
+        }
+
+        viewModel.scrapResponse.observe(this) {
+            swipeHelperCallback.removeNowClamp(binding.suggestRecycler)
+            if(it){
+                dismissLoadingDialog()
+            }
         }
     }
 
@@ -105,12 +115,6 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
             suggestsectorAdapter.notifyDataSetChanged()
             binding.countTxt.text = it.size.toString()+"개"
         }
-
-        viewModel.scrapResponse.observe(this) {
-            if(it){
-                dismissLoadingDialog()
-            }
-        }
     }
 
     override fun initAfterBinding() {
@@ -128,11 +132,17 @@ class SuggestDetailFragment : BaseFragment<FragmentSuggestDetailBinding, Suggest
         suggestsectorAdapter.scrapItemClickListener(object : SuggestSectorAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
                 var request = suggestsectorAdapter.getItem(a_position)
-
-                val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
-                    request.targetPrice, request.writerCompany, request.writer, request.date)
-                viewModel.insertSearch(insert)
-                showLoadingDialog(requireContext())
+                val addScrapDialog: AddScrapDialog = AddScrapDialog {
+                    when (it) {
+                        1 -> {
+                            val insert = UserScrap(request!!.company_id, request.company_name, request.suggestion, request.currentPrice,
+                                request.targetPrice, request.writerCompany, request.writer, request.date)
+                            viewModel.insertSearch(insert)
+                            showLoadingDialog(requireContext())
+                        }
+                    }
+                }
+                addScrapDialog.show(requireActivity().supportFragmentManager, addScrapDialog.tag)
             }
         })
 
