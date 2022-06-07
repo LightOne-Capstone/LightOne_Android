@@ -105,9 +105,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         daysAdapter.scrapItemClickListener(object : DaysAdapter.OnItemClickEventListener {
             override fun onItemClick(a_view: View?, a_position: Int) {
                 val sceapIdx = MyApplication.sSharedPreferences.getString("scrapIdx", null)
+                val date = MyApplication.sSharedPreferences.getString("date", null)
                 var request: Reports? = null
                 for(i in 0 until itemList.size){
-                    if(itemList[i].company_id == sceapIdx){request = itemList[i]}
+                    if(itemList[i].company_id == sceapIdx && itemList[i].date == date){request = itemList[i]}
                 }
 
                 val addScrapDialog: AddScrapDialog = AddScrapDialog {

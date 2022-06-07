@@ -127,8 +127,8 @@ class AddScrapTouchCallback() : ItemTouchHelper.Callback() {
     }
 
     fun removePreviousClamp(recyclerView: RecyclerView) {
-        if (currentPosition == previousPosition)
-            return
+//        if (currentPosition == previousPosition)
+//            return
         previousPosition?.let {
             val viewHolder = recyclerView.findViewHolderForAdapterPosition(it) ?: return
             getView(viewHolder).translationX = 0f
