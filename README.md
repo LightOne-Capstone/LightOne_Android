@@ -22,3 +22,4 @@ Kotlin ver# LightOne_Android
 14. 2022.06.04(SAT) -> Industry Image Logic(Not yet)
 15. 2022.06.05(SUN) -> Industry Image Function Complete
 16. 2022.06.06(MON) -> Recycler view paging
+17. 2022.06.07(TUE) -> Scrap Btn Erroe Update
