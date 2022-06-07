@@ -96,7 +96,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
                 binding.reportContent.text = detail.title
                 binding.reportSummary.text = detail.summery
                 binding.reportName.text = detail.writerCompany+" "+detail.writer
-                binding.targetPrice.text = "목표주가 "+priceFormatter(detail.targetPrice)+"원"
+                if(detail.targetPrice == 0){
+                    binding.targetPrice.text = "목표가 미정"
+                }
+                else{
+                    binding.targetPrice.text = "목표가 "+priceFormatter(detail.targetPrice) +"원"
+                }
                 binding.reportDate.text = detail.date
                 binding.reportPdfUrl.text = detail.pdfURL
                 val text = detail.pdfURL

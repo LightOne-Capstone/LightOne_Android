@@ -52,6 +52,7 @@ class ScrapFragment : BaseFragment<FragmentScrapBinding, ScraplViewModel>(R.layo
             }
             setOnTouchListener { _, _ ->
                 swipeHelperCallback.removePreviousClamp(this)
+                swipeHelperCallback.removeNowClamp(this)
                 false
             }
             setHasFixedSize(true)

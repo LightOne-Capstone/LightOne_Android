@@ -46,7 +46,13 @@ class SectorHolderPage internal constructor(
             }
         }
 
-        targetprice_txt.text = "목표가 "+priceFormatter(data.targetPrice) +"원"
+        if(data.targetPrice == 0){
+            targetprice_txt.text = "목표가 미정"
+        }
+        else{
+            targetprice_txt.text = "목표가 "+priceFormatter(data.targetPrice) +"원"
+        }
+
         stockcompany_txt.text = data.writerCompany
 
         sector_item.setOnClickListener { a_view ->

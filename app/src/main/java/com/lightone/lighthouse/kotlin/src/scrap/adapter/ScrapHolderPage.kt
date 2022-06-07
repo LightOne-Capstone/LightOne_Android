@@ -41,7 +41,12 @@ class ScrapHolderPage internal constructor(
             status_txt.setBackgroundResource(R.drawable.hold_custom)
         }
 
-        targetprice_txt.text = "목표가 "+priceFormatter(data.targetPrice) +"원"
+        if(data.targetPrice == 0){
+            targetprice_txt.text = "목표가 미정"
+        }
+        else{
+            targetprice_txt.text = "목표가 "+priceFormatter(data.targetPrice) +"원"
+        }
         stockcompany_txt.text = data.writerCompany
 
         sector_main.setOnClickListener(View.OnClickListener { a_view ->

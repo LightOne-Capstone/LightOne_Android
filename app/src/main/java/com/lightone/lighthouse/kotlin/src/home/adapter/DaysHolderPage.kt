@@ -57,7 +57,7 @@ class DaysHolderPage internal constructor(
             adapter = sectorAdapter
             setOnTouchListener { _, _ ->
                 swipeHelperCallback.removePreviousClamp(this)
-//                swipeHelperCallback.removeNowClamp(this)
+                swipeHelperCallback.removeNowClamp(this)
                 false
             }
             setHasFixedSize(true)
