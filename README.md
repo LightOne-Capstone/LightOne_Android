@@ -23,3 +23,4 @@ Kotlin ver# LightOne_Android
 15. 2022.06.05(SUN) -> Industry Image Function Complete
 16. 2022.06.06(MON) -> Recycler view paging
 17. 2022.06.07(TUE) -> Scrap Btn Erroe Update, Pdf Viewer at Webview(Not Complete)
+18. 2022.06.08(WEN) -> Version1
