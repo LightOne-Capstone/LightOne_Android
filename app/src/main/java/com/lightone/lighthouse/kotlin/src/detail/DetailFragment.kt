@@ -98,13 +98,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
                 binding.reportDate.text = detail.date
                 binding.reportPdfUrl.text = detail.pdfURL
 
-//                val text = detail.pdfURL
-//                val tvLinkify: TextView = binding.reportPdfUrl
-//                tvLinkify.text = text
-//                val mTransform =
-//                    Linkify.TransformFilter { _, _ -> "" }
-//                val pattern1: Pattern = Pattern.compile(text)
-//                Linkify.addLinks(tvLinkify, pattern1, text, null, mTransform)
+                val text = detail.pdfURL
+                val tvLinkify: TextView = binding.reportPdfUrl
+                tvLinkify.text = text
+                val mTransform =
+                    Linkify.TransformFilter { _, _ -> "" }
+                val pattern1: Pattern = Pattern.compile(text)
+                Linkify.addLinks(tvLinkify, pattern1, text, null, mTransform)
 
                 var word = detail.pdfURL.split("/")
                 Log.d("glide_response", BASE_URL+"/"+word.last()+".png")
@@ -143,12 +143,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>(R.la
             monthClick(binding.day90Btn, binding.day30Btn, binding.day60Btn, binding.dayBtn)
         }
 
-        binding.reportPdfUrl.setOnClickListener {
-            val args = binding.reportPdfUrl.text.toString()
-            val name = binding.companyTxt.text.toString()
-            val action = DetailFragmentDirections.actionDetailFragmentToPdfFragment(args, name)
-            navController.navigate(action)
-        }
+//        binding.reportPdfUrl.setOnClickListener {
+//            val args = binding.reportPdfUrl.text.toString()
+//            val name = binding.companyTxt.text.toString()
+//            val action = DetailFragmentDirections.actionDetailFragmentToPdfFragment(args, name)
+//            navController.navigate(action)
+//        }
     }
 
     private fun suggestBackground(data: String) {
